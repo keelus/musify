@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<meta charset="UTF-8">
+<title>Musify</title>
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<link rel="stylesheet" href="/static/css/index.css">
+<script src="/static/js/externo/jquery-3.7.1.min.js"></script>
+
+<body>
+	<div class="navegador">
+		<button data-seccion-destino="canciones"
+			class="boton-seccion {% if seccionActiva == 'canciones.html' %}activo{% endif %}">Canciones</button>
+		<button data-seccion-destino="playlists"
+			class="boton-seccion {% if seccionActiva == 'playlists.html' %}activo{% endif %}">Playlists</button>
+	</div>
+	<main id="contenedor">
+		{{ contenido | safe }}
+	</main>
+	{% include "reproductor.html" %}
+</body>
+<script src="/static/js/index.js"></script>
+<script src="/static/js/playlists.js">	</script>
+<script src="/static/js/playlist.js">	</script>
+
+</html>

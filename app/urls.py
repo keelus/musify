@@ -4,5 +4,7 @@ from django.urls import path
 from app import views
 
 urlpatterns = [
-    path('', view=views.index_page, name="index_page"),
+    path('', view=views.paginaCanciones, name="inicio"),
+    path('playlists', view=views.paginaPlaylists, name="inicio"),
+    path('playlist/<str:playlistID>', view=views.paginaPlaylist, name="inicio"),
 ]
