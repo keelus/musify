@@ -1,0 +1,145 @@
+.reproductor {
+	background: #000;
+	width: 100%;
+	box-sizing: border-box;
+	padding: 12px;
+
+	display: grid;
+	grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.reproductor>.parte-informacion,
+.reproductor>.parte-controles,
+.reproductor>.parte-volumen {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+
+	padding: 0.75rem;
+	height: 4rem;
+	box-sizing: border-box;
+}
+
+/* Parte informacion */
+.reproductor>.parte-informacion {
+	flex-direction: row;
+	justify-content: left;
+	align-items: center;
+	gap: 12px;
+}
+
+.reproductor>.parte-informacion>.caratula-cancion {
+	width: 4rem;
+	height: 4rem;
+	background: #27272a;
+	border-radius: 4px;
+}
+
+.reproductor>.parte-informacion>div {
+	display: flex;
+	flex-direction: column;
+	color: #f4f4f5;
+}
+
+.reproductor>.parte-informacion>div>.titulo-cancion {
+	font-size: 18px;
+}
+
+.reproductor>.parte-informacion>div>.artista-cancion {
+	font-size: 14px;
+	opacity: .6;
+}
+
+/* Parte controles */
+.reproductor>.parte-controles {
+	justify-content: space-around;
+	flex-direction: column;
+	cursor: default;
+	padding: 0;
+}
+
+
+.reproductor>.parte-controles>.botones {
+	display: flex;
+	align-items: center;
+	gap: 10px;
+}
+
+.reproductor>.parte-controles>.botones>button {
+	background: none;
+	border: none;
+	outline: none;
+	color: #f4f4f5;
+	transition: all linear .1s;
+}
+
+.reproductor>.parte-controles>.botones>button:disabled {
+	opacity: .5;
+}
+
+.reproductor>.parte-controles>.botones>button:not(:disabled):hover {
+	cursor: pointer;
+	opacity: .8;
+}
+
+.reproductor>.parte-controles>.botones>button>svg {
+	fill: #f4f4f5;
+	width: 20px;
+	height: 20px;
+}
+
+.reproductor>.parte-controles>.botones>button:nth-child(3)>svg {
+	fill: #f4f4f5;
+	width: 32px;
+	height: 32px;
+}
+
+.reproductor>.parte-controles>.progreso {
+	width: 100%;
+	display: flex;
+	align-items: center;
+	gap: 12px;
+}
+
+.reproductor>.parte-controles>.progreso>.tiempo {
+	font-size: 14px;
+	height: 14px;
+}
+
+/* Parte volumen */
+.reproductor>.parte-volumen {
+	justify-content: right;
+	gap: 5px;
+	flex-direction: row;
+}
+
+.reproductor>.parte-volumen>.volumen-porcentaje {
+	font-size: 14px;
+	height: 14px;
+}
+
+.reproductor>.parte-volumen>.barra {
+	max-width: 100px;
+}
+
+/* Barra de progreso/volumen */
+.barra {
+	height: 5px;
+	width: 100%;
+	background: #27272a;
+	position: relative;
+}
+
+.barra>.barra-progreso {
+	width: var(--progreso, 0%);
+	height: 100%;
+	position: absolute;
+	top: 0;
+	left: 0;
+	background: #f4f4f5;
+}
+
+.barra,
+.barra>.barra-progreso {
+	border-radius: 10px;
+}
