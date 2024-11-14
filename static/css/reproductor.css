@@ -88,11 +88,22 @@
 	height: 20px;
 }
 
-.reproductor>.parte-controles>.botones>button:nth-child(3)>svg {
+.reproductor>.parte-controles>.botones>button#playPausa svg {
 	fill: #f4f4f5;
 	width: 32px;
 	height: 32px;
+	display: none;
 }
+
+.reproductor>.parte-controles>.botones>button#playPausa:not(.pausado)>svg.iconoPausar {
+	display: block;
+}
+
+.reproductor>.parte-controles>.botones>button#playPausa.pausado>svg.iconoPlay {
+	display: block;
+}
+
+.reproductor>.parte-controles>.botones>button#playPausa.pausado svg {}
 
 .reproductor>.parte-controles>.progreso {
 	width: 100%;

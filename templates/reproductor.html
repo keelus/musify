@@ -2,8 +2,8 @@
 	<div class="parte-informacion">
 		<div class="caratula-cancion"></div>
 		<div>
-			<span class="titulo-cancion">Titulo de la cancion</span>
-			<span class="artista-cancion">Artista de la cancion</span>
+			<span class="titulo-cancion">titulo</span>
+			<span class="artista-cancion">artista</span>
 		</div>
 	</div>
 	<div class="parte-controles">
@@ -19,8 +19,11 @@
 					<path d="M4 2v20h-2v-20h2zm18 0l-16 10 16 10v-20z" />
 				</svg>
 			</button>
-			<button>
-				<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+			<button id="playPausa" class="pausado">
+				<svg class="iconoPausar" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+					<path d="M11 22h-4v-20h4v20zm6-20h-4v20h4v-20z" />
+				</svg>
+				<svg class="iconoPlay" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
 					<path
 						d="M12 0c-6.627 0-12 5.373-12 12s5.373 12 12 12 12-5.373 12-12-5.373-12-12-12zm-3 17v-10l9 5.146-9 4.854z" />
 				</svg>
@@ -40,18 +43,18 @@
 			</button>
 		</div>
 		<div class="progreso">
-			<div class="tiempo tiempo-actual">1:50</div>
+			<div class="tiempo tiempo-actual">0:00</div>
 			<div class="barra barra-tiempo">
-				<div class="barra-progreso" style="--progreso:50%;"></div>
+				<div class="barra-progreso" style="--progreso:0%;"></div>
 			</div>
-			<div class="tiempo tiempo-maximo">3:00</div>
+			<div class="tiempo tiempo-maximo">0:00</div>
 		</div>
 	</div>
 	<div class="parte-volumen">
 		<div class="barra barra-volumen">
-			<div class="barra-progreso" style="--progreso:70%"></div>
+			<div class="barra-progreso" style="--progreso:100%"></div>
 		</div>
-		<span class="volumen-porcentaje">70%</span>
+		<span class="volumen-porcentaje">100%</span>
 	</div>
 </div>
 <script src="/static/js/reproductor.js"></script>

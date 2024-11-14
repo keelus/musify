@@ -1,3 +1,4 @@
+from django.core.handlers.asgi import FileResponse
 from django.http import HttpResponse
 from django.shortcuts import render
 from django.template.loader import render_to_string
@@ -24,3 +25,8 @@ def paginaPlaylist(request, playlistID):
     return pagina(request, "playlist.html", {
         "playlistID": playlistID,
     }, "reducido" not in request.headers)
+
+# Devuelve un audio de ejemplo, simula por ahora el BLOB de la BD
+def apiConseguirAudio(request):
+    audio = open("./app/audio.mp3", "rb")
+    return FileResponse(audio, content_type="audio/mpeg")
