@@ -1,4 +1,9 @@
 # Musify
+Para el view de /admin de Django:
+```
+Nombre: "admin"
+Contraseña: "admin"
+```
 
 ### Tareas
 - [ ] View de login.
