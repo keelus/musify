@@ -1,0 +1,41 @@
+.cancion {
+	cursor: default;
+
+	display: flex;
+	width: 100%;
+	padding: 10px;
+	box-sizing: border-box;
+	margin-bottom: 10px;
+
+	transition: all .15s ease-out;
+}
+
+.cancion:hover {
+	background: #27272a;
+	cursor: pointer;
+}
+
+.cancion>.caratula {
+	width: 4rem;
+	height: 4rem;
+	background: red;
+}
+
+.cancion>.informacion {
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	margin-left: 10px;
+}
+
+.cancion>.informacion>.titulo {
+	font-size: 20px;
+}
+
+.cancion.activa>.informacion>.titulo {
+	color: #1ed760;
+}
+
+.cancion>.informacion>.artista {
+	font-size: 12px;
+}

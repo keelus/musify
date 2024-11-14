@@ -19,10 +19,22 @@ $(document).ready(() => {
 	const elementoReproductor = $(".reproductor")
 
 	const reproducirCancion = (datosCancion) => {
-		reproductor.audioDom = new Audio("/audio")
+		$(".cancion").removeClass("activa")
+
+		if (reproductor.audioDom !== null) {
+			reproductor.audioDom.pause()
+			reproductor.audioDom = null
+		}
+
+		reproductor.audioDom = new Audio(datosCancion.url)
+		reproductor.audioDom.play()
+		if (reproductor.pausado)
+			clickPlayPausa()
+
+		$(`.cancion[data-cancion-id=${datosCancion.id}]`).addClass("activa")
 
 		$(elementoReproductor).find(".titulo-cancion").text(datosCancion.titulo)
-		$(elementoReproductor).find(".artista-cancion").text(datosCancion.artista)
+		$(elementoReproductor).find(".artista-cancion").text(datosCancion.artistas.join(", "))
 	}
 
 	const clickPlayPausa = () => {
@@ -37,10 +49,6 @@ $(document).ready(() => {
 			reproductor.audioDom.play()
 		}
 	}
-
-	$(".parte-controles button#playPausa").on("click", () => {
-		clickPlayPausa()
-	})
 
 	let frameIdx = 0;
 	const iterar = () => {
@@ -67,10 +75,35 @@ $(document).ready(() => {
 	}
 	frameIdx = requestAnimationFrame(iterar)
 
-	reproducirCancion({
-		id: "...",
-		titulo: "El titulo",
-		artistas: ["El artista"],
-		url: "/audio",
+	// reproducirCancion({
+	// 	id: "...",
+	// 	titulo: "El titulo",
+	// 	artistas: ["El artista"],
+	// 	url: "/audio",
+	// })
+
+	// Eventos/clicks del DOM
+	$(".parte-controles button#playPausa").on("click", () => {
+		clickPlayPausa()
+	})
+
+	$(".cancion").on("click", (e) => {
+		const cancionId = $(e.target).data("cancion-id")
+
+		$.ajax({
+			url: `/api/audio/informacion/${cancionId}`,
+			success: function(datos) {
+				console.log(datos)
+				reproducirCancion({
+					id: cancionId,
+					titulo: datos.nombre,
+					artistas: datos.artistas,
+					url: `/api/audio/archivo/${cancionId}`
+				})
+			},
+			error: function(xhr, estado, error) {
+				console.error("Error al conseguir informacion de la cancion: ", error)
+			}
+		})
 	})
 })

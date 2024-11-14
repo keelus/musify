@@ -1,6 +1,7 @@
 .reproductor {
 	background: #000;
 	width: 100%;
+	height: 88px;
 	box-sizing: border-box;
 	padding: 12px;
 
@@ -54,7 +55,6 @@
 .reproductor>.parte-controles {
 	justify-content: space-around;
 	flex-direction: column;
-	cursor: default;
 	padding: 0;
 }
 

@@ -7,5 +7,9 @@ urlpatterns = [
     path('', view=views.paginaCanciones, name="inicio"),
     path('playlists', view=views.paginaPlaylists, name="inicio"),
     path('playlist/<str:playlistID>', view=views.paginaPlaylist, name="inicio"),
-    path('audio', view=views.apiConseguirAudio, name="audio"),
+    #path('audio', view=views.apiConseguirAudio, name="audio"),
+
+
+    path('api/audio/informacion/<str:audioID>', view=views.apiConseguirAudioInformacion, name="audio"),
+    path('api/audio/archivo/<str:audioID>', view=views.apiConseguirAudioArchivo, name="audio"),
 ]

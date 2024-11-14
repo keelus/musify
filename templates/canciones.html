@@ -1,4 +1,16 @@
-<section id="contenido">
+<section id="contenido" class="contenido-canciones">
 	<h1>Indice de canciones</h1>
-	Aqui irian las canciones.
+	{% for cancion in canciones %}
+	<div class="cancion" data-cancion-id="{{ cancion.id }}">
+		<div class="caratula"></div>
+		<div class="informacion">
+			<span class="titulo">{{ cancion.nombre }}</span>
+			<span class="artista">
+				{% for artista in cancion.artistas %}
+				{{ artista.nombre }}{% if not forloop.last %},{% endif %}
+				{% endfor %}
+			</span>
+		</div>
+	</div>
+	{% endfor %}
 </section>
