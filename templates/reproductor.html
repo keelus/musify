@@ -6,7 +6,7 @@
 			<span class="artista-cancion">artista</span>
 		</div>
 	</div>
-	<div class="parte-controles">
+	<div class="parte-controles desactivados">
 		<div class="botones">
 			<button disabled>
 				<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
@@ -14,12 +14,12 @@
 						d="M2 7h-2v-2h2c3.49 0 5.48 1.221 6.822 2.854-.41.654-.754 1.312-1.055 1.939-1.087-1.643-2.633-2.793-5.767-2.793zm16 10c-3.084 0-4.604-1.147-5.679-2.786-.302.627-.647 1.284-1.06 1.937 1.327 1.629 3.291 2.849 6.739 2.849v3l6-4-6-4v3zm0-10v3l6-4-6-4v3c-5.834 0-7.436 3.482-8.85 6.556-1.343 2.921-2.504 5.444-7.15 5.444h-2v2h2c5.928 0 7.543-3.511 8.968-6.609 1.331-2.893 2.479-5.391 7.032-5.391z" />
 				</svg>
 			</button>
-			<button>
+			<button id="anterior" disabled>
 				<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
 					<path d="M4 2v20h-2v-20h2zm18 0l-16 10 16 10v-20z" />
 				</svg>
 			</button>
-			<button id="playPausa" class="pausado">
+			<button id="playPausa" class="pausado" disabled>
 				<svg class="iconoPausar" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
 					<path d="M11 22h-4v-20h4v20zm6-20h-4v20h4v-20z" />
 				</svg>
@@ -28,7 +28,7 @@
 						d="M12 0c-6.627 0-12 5.373-12 12s5.373 12 12 12 12-5.373 12-12-5.373-12-12-12zm-3 17v-10l9 5.146-9 4.854z" />
 				</svg>
 			</button>
-			<button>
+			<button id="siguiente" disabled>
 				<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
 					<path d="M20 22v-20h2v20h-2zm-18 0l16-10-16-10v20z" />
 				</svg>
@@ -42,7 +42,7 @@
 				</svg>
 			</button>
 		</div>
-		<div class="progreso">
+		<div class="progreso deshabilitado">
 			<div class="tiempo tiempo-actual">0:00</div>
 			<div class="barra barra-tiempo">
 				<div class="barra-progreso" style="--progreso:0%;"></div>

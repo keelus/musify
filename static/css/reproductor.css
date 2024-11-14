@@ -58,7 +58,6 @@
 	padding: 0;
 }
 
-
 .reproductor>.parte-controles>.botones {
 	display: flex;
 	align-items: center;
@@ -112,6 +111,14 @@
 	gap: 12px;
 }
 
+.reproductor>.parte-controles>.progreso.deshabilitado {
+	opacity: .5;
+}
+
+.reproductor>.parte-controles>.progreso.deshabilitado>.barra:hover {
+	cursor: default !important;
+}
+
 .reproductor>.parte-controles>.progreso>.tiempo {
 	font-size: 14px;
 	height: 14px;
@@ -139,6 +146,10 @@
 	width: 100%;
 	background: #27272a;
 	position: relative;
+}
+
+.barra:hover {
+	cursor: pointer;
 }
 
 .barra>.barra-progreso {

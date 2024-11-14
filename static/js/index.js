@@ -21,6 +21,7 @@ const actualizarTitulo = (rutaDestino) => {
 
 	document.title = "Musify";
 }
+
 const reemplazarContenido = async (rutaDestino) => {
 	if (rutaDestino === "/") {
 		$(".boton-seccion[data-seccion-destino='canciones']").addClass("activo")
@@ -55,6 +56,7 @@ const reemplazarContenido = async (rutaDestino) => {
 		},
 		success: function(datos) {
 			$("main#contenedor").html(datos)
+			document.dispatchEvent(new Event("cambioDePagina"))
 		},
 		error: function(xhr, estado, error) {
 			console.error("Error al cargar el contenido: ", error)
@@ -76,4 +78,13 @@ $(".boton-seccion").on("click", (e) => {
 
 $(document).ready(() => {
 	actualizarTitulo(document.location.pathname);
+
+	const reproductor = new Reproductor();
+
+	$(document).on("click", ".cancion", (e) => {
+		const cancionId = $(e.target).data("cancion-id")
+		reproductor.reproducirCancion(cancionId)
+	})
+
+	$(document).on("cambioDePagina", () => reproductor.gestionarCambioPagina())
 })

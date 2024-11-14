@@ -1,4 +1,6 @@
 const formatearSegundos = (duracionSegundos) => {
+	if (isNaN(duracionSegundos)) return "0:00"
+
 	const minutos = Math.floor(duracionSegundos / 60).toFixed(0)
 	const segundos = Math.floor(duracionSegundos - minutos * 60).toFixed(0)
 
@@ -7,103 +9,139 @@ const formatearSegundos = (duracionSegundos) => {
 	return `${minutos}:${segundosVisual}`
 }
 
-$(document).ready(() => {
-	let reproductor = {
-		pausado: true,
-		audioDom: null,
+class Reproductor {
+	constructor() {
+		this.pausado = true
+		this.audioDom = null
+		this.cancionActual = null
+
+		this.arrastrandoBarra = false
+
+		this.inicializarEventos()
+		this.animFrame = requestAnimationFrame(() => this.domRender())
 	}
 
-	// Codigo principal del reproductor
-	console.log("Reproductor iniciado [una vez solamente].")
+	inicializarEventos() {
+		$(".parte-controles button#playPausa").on("click", () => {
+			this.reproducirPararCancion()
+		})
 
-	const elementoReproductor = $(".reproductor")
+		$(".parte-controles .barra").on("mousedown", (e) => {
+			this.arrastrandoBarra = true;
+			this.clickEnBarra(e.pageX)
+		})
 
-	const reproducirCancion = (datosCancion) => {
-		$(".cancion").removeClass("activa")
+		$(document).on("mouseup", (e) => {
+			this.arrastrandoBarra = false;
+		})
 
-		if (reproductor.audioDom !== null) {
-			reproductor.audioDom.pause()
-			reproductor.audioDom = null
-		}
-
-		reproductor.audioDom = new Audio(datosCancion.url)
-		reproductor.audioDom.play()
-		if (reproductor.pausado)
-			clickPlayPausa()
-
-		$(`.cancion[data-cancion-id=${datosCancion.id}]`).addClass("activa")
-
-		$(elementoReproductor).find(".titulo-cancion").text(datosCancion.titulo)
-		$(elementoReproductor).find(".artista-cancion").text(datosCancion.artistas.join(", "))
+		$(document).on("mousemove", (e) => {
+			this.clickEnBarra(e.pageX)
+		})
 	}
 
-	const clickPlayPausa = () => {
-		if (reproductor.audioDom === null) return;
+	clickEnBarra(ratonX) {
+		if (this.audioDom === null || !this.arrastrandoBarra) return;
 
-		reproductor.pausado = !reproductor.pausado
-		if (reproductor.pausado) {
-			$(".parte-controles button#playPausa").addClass("pausado")
-			reproductor.audioDom.pause()
-		} else {
-			$(".parte-controles button#playPausa").removeClass("pausado")
-			reproductor.audioDom.play()
-		}
+		const barraX = $(".parte-controles .barra").offset().left;
+
+		const x = ratonX - barraX;
+
+		const barraAncho = $(".parte-controles .barra").width();
+
+		const nuevoProgreso = Math.max(0.00, Math.min(x / barraAncho, 100.00))
+		this.audioDom.currentTime = this.audioDom.duration * nuevoProgreso;
 	}
 
-	let frameIdx = 0;
-	const iterar = () => {
-		if (reproductor.audioDom !== null) {
-			const duracion = reproductor.audioDom.duration;
-			const actual = reproductor.audioDom.currentTime;
+	domRender() {
+		// Actualizar la informacion necesaria. Se ejecuta una vez por frame
+		if (this.audioDom !== null) {
+			const duracion = this.audioDom.duration;
+			const actual = this.audioDom.currentTime;
 
-			$(elementoReproductor).find(".tiempo-maximo").text(formatearSegundos(duracion))
+			$(".reproductor").find(".tiempo-maximo").text(formatearSegundos(duracion))
 
 			const progreso = actual / duracion
 			$(".parte-controles .progreso .barra-progreso").css("--progreso", `${progreso * 100}%`)
 			$(".parte-controles .progreso .tiempo-actual").text(formatearSegundos(actual))
 
-			if (reproductor.audioDom.ended) {
+			if (this.audioDom.ended) {
 				console.log("Audio fin")
 			}
+
+			$(".parte-controles button#playPausa").toggleClass("pausado", this.pausado)
 		} else {
 			$(".parte-controles .progreso .tiempo-actual").text(formatearSegundos(0))
 			$(".parte-controles .progreso .tiempo-maximo").text(formatearSegundos(0))
 		}
 
-		// Logica aqui
-		frameIdx = requestAnimationFrame(iterar);
+		$(".parte-controles button#anterior").prop("disabled", this.audioDom === null)
+		$(".parte-controles button#playPausa").prop("disabled", this.audioDom === null)
+		$(".parte-controles button#siguiente").prop("disabled", this.audioDom === null)
+
+		$(".parte-controles .progreso").toggleClass("deshabilitado", this.audioDom === null)
+
+		this.animFrame = requestAnimationFrame(() => this.domRender())
 	}
-	frameIdx = requestAnimationFrame(iterar)
 
-	// reproducirCancion({
-	// 	id: "...",
-	// 	titulo: "El titulo",
-	// 	artistas: ["El artista"],
-	// 	url: "/audio",
-	// })
+	async reproducirCancion(id) {
+		// Conseguir informacion sobre la cancion
+		let cancion = {
+			id,
+			url: `/api/audio/archivo/${id}`
+		}
 
-	// Eventos/clicks del DOM
-	$(".parte-controles button#playPausa").on("click", () => {
-		clickPlayPausa()
-	})
-
-	$(".cancion").on("click", (e) => {
-		const cancionId = $(e.target).data("cancion-id")
-
-		$.ajax({
-			url: `/api/audio/informacion/${cancionId}`,
+		await $.ajax({
+			url: `/api/audio/informacion/${id}`,
 			success: function(datos) {
-				console.log(datos)
-				reproducirCancion({
-					id: cancionId,
-					titulo: datos.nombre,
-					artistas: datos.artistas,
-					url: `/api/audio/archivo/${cancionId}`
-				})
+				cancion.titulo = datos.nombre
+				cancion.artistas = datos.artistas
+
 			},
 			error: function(xhr, estado, error) {
 				console.error("Error al conseguir informacion de la cancion: ", error)
 			}
 		})
-	})
-})
+		this.cancionActual = cancion
+
+		// Si hay una cancion reproduciendose, pararla y eliminarla
+		if (this.audioDom !== null) {
+			this.audioDom.pause()
+			this.audioDom = null
+		}
+
+		// Crear nuevo elemento de <Audio> con la url de la cancion
+		this.audioDom = new Audio(cancion.url)
+		this.audioDom.play()
+		if (this.pausado)
+			this.reproducirPararCancion()
+
+		// Actualizar informacion del this
+		$(".reproductor .titulo-cancion").text(cancion.titulo)
+		$(".reproductor .artista-cancion").text(cancion.artistas.join(", "))
+
+		// Colocar como activa en la pagina a la cancion actual
+		this.gestionarCambioPagina()
+	}
+
+	reproducirPararCancion() {
+		if (this.audioDom === null) return;
+
+		this.pausado = !this.pausado
+		if (this.pausado) {
+			this.audioDom.pause()
+		} else {
+			this.audioDom.play()
+		}
+	}
+
+	gestionarCambioPagina() {
+		if (this.cancionActual === null) return;
+
+		// Quitar activa en todas las canciones de HTML
+		$(".cancion").removeClass("activa")
+
+		// Colocar el estado de la cancion clickeada como activa
+		$(`.cancion[data-cancion-id=${this.cancionActual.id}]`).addClass("activa")
+	}
+}
