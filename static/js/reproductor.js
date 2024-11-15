@@ -16,6 +16,7 @@ class Reproductor {
 		this.cancionActual = null
 
 		this.arrastrandoBarra = false
+		this.arrastrandoBarraVolumen = false
 
 		this.inicializarEventos()
 		this.animFrame = requestAnimationFrame(() => this.domRender())
@@ -31,12 +32,19 @@ class Reproductor {
 			this.clickEnBarra(e.pageX)
 		})
 
+		$(".parte-volumen .barra").on("mousedown", (e) => {
+			this.arrastrandoBarraVolumen = true;
+			this.clickEnBarraVolumen(e.pageX)
+		})
+
 		$(document).on("mouseup", (e) => {
 			this.arrastrandoBarra = false;
+			this.arrastrandoBarraVolumen = false;
 		})
 
 		$(document).on("mousemove", (e) => {
 			this.clickEnBarra(e.pageX)
+			this.clickEnBarraVolumen(e.pageX)
 		})
 	}
 
@@ -53,6 +61,19 @@ class Reproductor {
 		this.audioDom.currentTime = this.audioDom.duration * nuevoProgreso;
 	}
 
+	clickEnBarraVolumen(ratonX) {
+		if (this.audioDom === null || !this.arrastrandoBarraVolumen) return;
+
+		const barraX = $(".parte-volumen .barra").offset().left;
+
+		const x = ratonX - barraX;
+
+		const barraAncho = $(".parte-volumen .barra").width();
+
+		const nuevoVolumen = Math.max(0.00, Math.min(x / barraAncho, 100.00))
+		this.audioDom.volume = nuevoVolumen;
+	}
+
 	domRender() {
 		// Actualizar la informacion necesaria. Se ejecuta una vez por frame
 		if (this.audioDom !== null) {
@@ -64,6 +85,9 @@ class Reproductor {
 			const progreso = actual / duracion
 			$(".parte-controles .progreso .barra-progreso").css("--progreso", `${progreso * 100}%`)
 			$(".parte-controles .progreso .tiempo-actual").text(formatearSegundos(actual))
+
+			$(".parte-volumen .barra-progreso").css("--progreso", `${this.audioDom.volume * 100}%`)
+			$(".parte-volumen .volumen-porcentaje").text(`${Math.floor(this.audioDom.volume * 100)}%`);
 
 			if (this.audioDom.ended) {
 				console.log("Audio fin")
