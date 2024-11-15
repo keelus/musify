@@ -1,0 +1,71 @@
+@font-face {
+	font-family: "OpenSans";
+	src: url("/static/tipografias/open-sans/OpenSans-Variable.ttf");
+}
+
+* {
+    box-sizing: border-box;
+    font-family: "OpenSans", serif;
+}
+
+body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: #18181b;
+	color: #fff;
+	min-height: 100dvh;
+	min-width: 100dvw;
+    margin: 0;
+    padding: 0;
+}
+
+h1 {
+    font-size: 1.5rem;
+    margin-bottom: 20px;
+}
+
+.inputs {
+    margin-bottom: 20px;
+}
+
+.inputs input {
+    width: 100%;
+    padding: 10px;
+    border: none;
+    border-radius: 5px;
+    font-size: 1rem;
+}
+
+.login-btn {
+    width: 100%;
+    padding: 10px;
+    background: #1ed760;
+    color: #fff;
+    border: none #1ed760;
+    border-radius: 5px;
+    font-size: 1rem;
+    cursor: pointer;
+    margin-bottom: 20px;
+}
+
+.login-btn:hover {
+    background-color: #1aa34a;
+}
+
+.recuerdame {
+    display: flex;
+    align-items: center;
+    justify-content: start;
+    font-size: 0.9rem;
+    margin-bottom: 20px;
+}
+
+.registrar {
+    font-size: 0.9rem;
+}
+
+.registrar a {
+    color: #1db954;
+    text-decoration: none;
+}
