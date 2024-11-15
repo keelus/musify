@@ -65,3 +65,5 @@ def apiConseguirAudioArchivo(request, audioID):
 def registrarse(request):
     return render(request, "registro.html")
 
+def login(request):
+    return render(request, "login.html")
