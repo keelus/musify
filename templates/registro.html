@@ -6,8 +6,7 @@
     <link rel="stylesheet" href="/static/css/registro.css">
 </head>
 <body>
-    /*Falta hacer el boton de mandar, cambiar los colores a negro, blanco y verde.
-    Y que el register mande el registro a la bd.*/
+    /* Hacer que el register mande el registro a la bd o a algun lado, pero no a la nada.*/
     <h1>REGISTRO DE USUARIO</h1>
 
     <form action="server.php" method="post" id="registro-1">
@@ -27,6 +26,10 @@
         <input type="password" name="contraseña" id="contraseña" required
             minlength="6" maxlength="20" pattern="(?=.*[A-Z]) (?=.*\d)">
         <p id="aviso-contra">La contraseña debe contener entre 8 y 20 caracteres, y minimo una mayuscuals y un numero </p>
+        
+        <label for="verif-contra">Verifica la contraseña:</label>
+        <input type="password" name="verif-contra" id="verif-contra" required
+            minlength="6" maxlength="20" pattern="(?=.*[A-Z]) (?=.*\d)">
         
         <br><br>
         
