@@ -6,16 +6,32 @@
     <link rel="stylesheet" href="/static/css/registro.css">
 </head>
 <body>
+    /*Falta hacer el boton de mandar, cambiar los colores a negro, blanco y verde.
+    Y que el register mande el registro a la bd.*/
     <h1>REGISTRO DE USUARIO</h1>
 
-    <form action="server.php" method="post" id="registro_1">
+    <form action="server.php" method="post" id="registro-1">
+        
+        <br>
+        <label for="nombre">Nombre usuario:</label>
+        <input type="text" name="nombre" id="nombre" required>
 
-        <label for="Usuario">Nombre usuario</label>
-        <input type="text" name="Usuario" id="Usuario" required>
-    
         <br><br>
-        <label for="Contraseña">Contraseña</label>
-        <input type="password" name="Contraseña" id="Contraseña" required>
+        
+        <label for="correo">Correo electronico:</label>
+        <input type="text" name="correo" id="correo" required>  
+        
+        <br><br>
+
+        <label for="contraseña">Contraseña:</label>
+        <input type="password" name="contraseña" id="contraseña" required
+            minlength="6" maxlength="20" pattern="(?=.*[A-Z]) (?=.*\d)">
+        <p id="aviso-contra">La contraseña debe contener entre 8 y 20 caracteres, y minimo una mayuscuals y un numero </p>
+        
+        <br><br>
+        
+        <input type="submit" value="Confirmar registro">
+        
     </form>
 </body>
 </html>

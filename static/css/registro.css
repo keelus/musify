@@ -1,10 +1,25 @@
 body{
     background-color: #18181b;
-
     text-align: center;
 }
 
-label{
+h1{
     color: #fff;
 }
+/* La contraseña debe contenter entre 8 y 20 caracteres, 2 de ellos numeros y uno mayusculas*/
+form{
+    background-color: #1ed760;
+    margin-left: 500px;
+    margin-right: 500px;
+    border-radius: 20px;
+    border-style: solid;
+    border-width: 2px;
+    border-color: #fff;
+    padding-bottom: 20px;
+}
 
+#aviso-contra{
+    background-color: lightcoral;
+    border-radius: 2px;
+
+}
