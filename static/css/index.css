@@ -68,3 +68,30 @@ section {
 	cursor: pointer;
 	background: #101010;
 }
+
+.navegador>.cuenta {
+	display: flex;
+	background: black;
+	padding: 10px;
+	gap: 10px;
+	align-items: center;
+	border-radius: 5px;
+}
+
+.navegador>.cuenta>a:link {
+	border: none;
+	width: 35px;
+	height: 35px;
+	border-radius: 3px;
+	padding: 5px;
+	box-sizing: border-box;
+	background: #fff;
+
+	transition: all .1s linear;
+}
+
+.navegador>.cuenta>a:link:hover {
+	background: red;
+	cursor: pointer;
+	opacity: .8;
+}

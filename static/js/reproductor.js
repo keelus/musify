@@ -88,11 +88,11 @@ class Reproductor {
 		// Conseguir informacion sobre la cancion
 		let cancion = {
 			id,
-			url: `/api/audio/archivo/${id}`
+			url: `/api/audio/${id}/archivo`
 		}
 
 		await $.ajax({
-			url: `/api/audio/informacion/${id}`,
+			url: `/api/audio/${id}/informacion`,
 			success: function(datos) {
 				cancion.titulo = datos.nombre
 				cancion.artistas = datos.artistas

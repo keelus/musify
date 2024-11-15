@@ -47,22 +47,6 @@ def paginaPlaylist(request, playlistID):
         "playlistID": playlistID,
     }, "reducido" not in request.headers)
 
-# Devuelve un audio de ejemplo, simula por ahora el BLOB de la BD
-def apiConseguirAudioInformacion(request, audioID):
-    cancion = Cancion.objects.get(id=audioID)
-    nombresArtistas = []
-    for artistaObjectoBd in cancion.artistas.all():
-        nombresArtistas.append(artistaObjectoBd.nombre)
-
-    return JsonResponse({
-        "nombre": cancion.nombre,
-        "artistas": nombresArtistas,
-    })
-
-def apiConseguirAudioArchivo(request, audioID):
-    archivo = Cancion.objects.get(id=audioID).archivo
-    return FileResponse(archivo, content_type="audio/mpeg")
-
 def registrarse(request):
     return render(request, "registro.html")
 
