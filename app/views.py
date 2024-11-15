@@ -1,4 +1,5 @@
 from django.core.handlers.asgi import FileResponse
+from django.db.models.fields import return_None
 from django.http import HttpResponse, JsonResponse
 from django.shortcuts import render
 from django.template.loader import render_to_string
@@ -67,3 +68,14 @@ def registrarse(request):
 
 def login(request):
     return render(request, "login.html")
+
+def procesarDatosFormulario(request):
+    if request.method == "POST":
+        nombre = request.POST.get("nombre")
+        correo = request.POST.get("correo")
+        contra = request.POST.get("contrato")
+        if nombre and correo and contra:
+            return HttpResponse(f'Hola {nombre}, bienvenido a musify!')
+        else:
+            return HttpResponse('Fallo a la hora de registrar los datos')
+    return HttpResponse('Metodo no permitido', status=405)

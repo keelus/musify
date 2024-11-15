@@ -15,5 +15,6 @@ urlpatterns = [
 
     path('login', view=views.login, name="login"),
     path('register', view=views.registrarse, name="registrarse"),
+    path('procesarDatos/',views.procesarDatosFormulario, name="procesarDatosFormulario"),
 ]
 
