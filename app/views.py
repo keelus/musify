@@ -61,3 +61,7 @@ def apiConseguirAudioInformacion(request, audioID):
 def apiConseguirAudioArchivo(request, audioID):
     archivo = Cancion.objects.get(id=audioID).archivo
     return FileResponse(archivo, content_type="audio/mpeg")
+
+def registrarse(request):
+    return render(request, "registro.html")
+

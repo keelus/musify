@@ -12,4 +12,6 @@ urlpatterns = [
 
     path('api/audio/informacion/<str:audioID>', view=views.apiConseguirAudioInformacion, name="audio"),
     path('api/audio/archivo/<str:audioID>', view=views.apiConseguirAudioArchivo, name="audio"),
+    #Aqui esta el path que permite que al poner "register" en la ruta vaya al apartado de registro
+    path('register', view=views.registrarse, name="registrarse"),
 ]
