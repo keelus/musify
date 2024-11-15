@@ -1,4 +1,6 @@
 from django.db import models
+from django.db.models import ManyToManyField
+
 
 class Usuario(models.Model):
     objects = models.Manager() # Para que el LSP no me de error
@@ -37,6 +39,8 @@ class Playlist(models.Model):
 
     nombre = models.CharField(max_length = 100)
     autor = models.OneToOneField(Usuario, on_delete=models.CASCADE)
-
+    canciones=models.ManyToManyField(Cancion, blank=True)
     def __str__(self):
         return str(self.nombre)
+
+
