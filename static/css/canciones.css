@@ -15,10 +15,13 @@
 	cursor: pointer;
 }
 
-.cancion>.caratula {
+.cancion>.cover {
 	width: 4rem;
 	height: 4rem;
-	background: red;
+	background: #27272a;
+	background-image: var(--cover);
+	background-size: cover;
+	border-radius: 2px;
 }
 
 .cancion>.informacion {

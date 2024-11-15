@@ -29,11 +29,19 @@
 	gap: 12px;
 }
 
-.reproductor>.parte-informacion>.caratula-cancion {
+.reproductor>.parte-informacion>.cover-cancion {
 	width: 4rem;
 	height: 4rem;
 	background: #27272a;
 	border-radius: 4px;
+	background-image: var(--cover);
+	background-size: cover;
+}
+
+.reproductor>.parte-informacion>.cover-cancion>svg {
+	fill: #fff;
+	margin: auto;
+	display: none;
 }
 
 .reproductor>.parte-informacion>div {
@@ -49,6 +57,20 @@
 .reproductor>.parte-informacion>div>.artista-cancion {
 	font-size: 14px;
 	opacity: .6;
+}
+
+.reproductor>.parte-informacion.vacia>div>.titulo-cancion {
+	font-size: 14px;
+	opacity: .8;
+}
+
+.reproductor>.parte-informacion.vacia>div>.artista-cancion {
+	display: none;
+}
+
+.reproductor>.parte-informacion.vacia>.cover-cancion>svg {
+	opacity: .8;
+	display: block;
 }
 
 /* Parte controles */

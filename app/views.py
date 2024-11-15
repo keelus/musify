@@ -23,6 +23,7 @@ def paginaCanciones(request):
         cancion = {
             "id": cancionObjetoBd.id,
             "nombre": cancionObjetoBd.nombre,
+            "coverUrl": cancionObjetoBd.cover,
             "artistas": []
         }
 

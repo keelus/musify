@@ -25,7 +25,8 @@ class Cancion(models.Model):
     objects = models.Manager()
 
     nombre = models.CharField(max_length = 100)
-    archivo = models.FileField()
+    archivo = models.FileField(upload_to="./archibosBd/imagenes")
+    cover = models.FileField(upload_to="./archivosBd/imagenes/")
     artistas = models.ManyToManyField(Artista)
 
     def __str__(self):

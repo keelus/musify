@@ -14,8 +14,9 @@ urlpatterns = [
     path('procesarDatos/',views.procesarDatosFormulario, name="procesarDatosFormulario"),
 
     # Api
-    path('api/audio/<str:audioID>/informacion', view=api.getAudioInformacion, name="audio"),
-    path('api/audio/<str:audioID>/archivo', view=api.getAudioArchivo, name="audio"),
+    path('api/cancion/<str:audioID>/informacion', view=api.getAudioInformacion, name="audio_informacion"),
+    path('api/cancion/<str:audioID>/archivo', view=api.getAudioArchivo, name="audio_archivo"),
+    path('api/cancion/<str:audioID>/cover', view=api.getAudioCover, name="audio_cover"),
 
     path('api/sesion/cerrar', view=api.cerrarSesion, name="audio"),
 ]

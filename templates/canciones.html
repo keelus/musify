@@ -2,7 +2,7 @@
 	<h1>Indice de canciones</h1>
 	{% for cancion in canciones %}
 	<div class="cancion" data-cancion-id="{{ cancion.id }}">
-		<div class="caratula"></div>
+		<div class="cover" style="--cover:url('/api/cancion/{{ cancion.id }}/cover')"></div>
 		<div class="informacion">
 			<span class="titulo">{{ cancion.nombre }}</span>
 			<span class="artista">

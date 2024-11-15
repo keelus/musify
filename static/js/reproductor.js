@@ -88,20 +88,20 @@ class Reproductor {
 		// Conseguir informacion sobre la cancion
 		let cancion = {
 			id,
-			url: `/api/audio/${id}/archivo`
+			url: `/api/cancion/${id}/archivo`
 		}
 
 		await $.ajax({
-			url: `/api/audio/${id}/informacion`,
+			url: `/api/cancion/${id}/informacion`,
 			success: function(datos) {
 				cancion.titulo = datos.nombre
 				cancion.artistas = datos.artistas
-
 			},
 			error: function(xhr, estado, error) {
 				console.error("Error al conseguir informacion de la cancion: ", error)
 			}
 		})
+
 		this.cancionActual = cancion
 
 		// Si hay una cancion reproduciendose, pararla y eliminarla
@@ -116,9 +116,11 @@ class Reproductor {
 		if (this.pausado)
 			this.reproducirPararCancion()
 
-		// Actualizar informacion del this
-		$(".reproductor .titulo-cancion").text(cancion.titulo)
-		$(".reproductor .artista-cancion").text(cancion.artistas.join(", "))
+		// Actualizar informacion del reproductor
+		$(".reproductor .parte-informacion").removeClass("vacia")
+		$(".reproductor .parte-informacion .titulo-cancion").text(cancion.titulo)
+		$(".reproductor .parte-informacion .artista-cancion").text(cancion.artistas.join(", "))
+		$(".reproductor .parte-informacion .cover-cancion").css("--cover", `url('/api/cancion/${cancion.id}/cover')`)
 
 		// Colocar como activa en la pagina a la cancion actual
 		this.gestionarCambioPagina()
