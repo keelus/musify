@@ -35,7 +35,6 @@ def iniciarSesion(request):
             usuario = authenticate(request, username=nombre, password=contra) # TODO: hacer que se pueda iniciar sesion
             if usuario is not None:
                 login(request, usuario)
-                print(usuario, contra)
                 return HttpResponseRedirect("/")
             else:
                 return HttpResponse('Usuario o contraseña incorrectos', status=401)
