@@ -1,41 +1,43 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-  <meta charset="UTF-8">
-  <title>Registro</title>
-    <link rel="stylesheet" href="/static/css/registro.css">
+	<meta charset="UTF-8">
+	<title>Registro</title>
+	<link rel="stylesheet" href="/static/css/registro.css">
 </head>
+
 <body>
-    /* Hacer que el register mande el registro a la bd o a algun lado, pero no a la nada.*/
-    <h1>REGISTRO DE USUARIO</h1>
+	/* Hacer que el register mande el registro a la bd o a algun lado, pero no a la nada.*/
+	<h1>REGISTRO DE USUARIO</h1>
 
-    <form action="procesarDatos" method="post" id="registro-1">
-        {% csrf_token %}
-        
-        <br>
-        <label for="nombre">Nombre usuario:</label>
-        <input type="text" name="nombre" id="nombre" required>
+	<form action="procesarDatos" method="post" id="registro-1">
+		{% csrf_token %}
 
-        <br><br>
-        
-        <label for="correo">Correo electronico:</label>
-        <input type="text" name="correo" id="correo" required>  
-        
-        <br><br>
+		<br>
+		<label for="nombre">Nombre usuario:</label>
+		<input type="text" name="nombre" id="nombre" required>
 
-        <label for="contraseña">Contraseña:</label>
-        <input type="password" name="contra" id="contraseña" required
-            minlength="6" maxlength="20" >
-        <p id="aviso-contra">La contraseña debe contener entre 6 y 20 caracteres, y minimo una mayuscuals y un numero </p>
-        
-        <label for="verif-contra">Verifica la contraseña:</label>
-        <input type="password" name="verif-contra" id="verif-contra" required
-            minlength="6" maxlength="20">
-        
-        <br><br>
-        
-        <input type="submit" value="Confirmar registro">
-        
-    </form>
+		<br><br>
+
+		<label for="correo">Correo electronico:</label>
+		<input type="text" name="correo" id="correo" required>
+
+		<br><br>
+
+		<label for="contraseña">Contraseña:</label>
+		<input type="password" name="contra" id="contraseña" required minlength="6" maxlength="20">
+		<p id="aviso-contra">La contraseña debe contener entre 6 y 20 caracteres, y minimo una mayuscuals y un numero
+		</p>
+
+		<label for="verif-contra">Verifica la contraseña:</label>
+		<input type="password" name="verif-contra" id="verif-contra" required minlength="6" maxlength="20">
+
+		<br><br>
+
+		<input type="submit" value="Confirmar registro">
+
+	</form>
 </body>
+
 </html>

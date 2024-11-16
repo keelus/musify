@@ -5,16 +5,18 @@ Nombre: "admin"
 Contraseña: "admin"
 ```
 
+Repositorio de Github: https://github.com/keelus/musify
+
 ### Tareas
-- [ ] View de login.
-- [ ] View de registro.
+- [x] View de login.
+- [x] View de registro.
 - [ ] Sistema de sesiones básico.
-- [ ] Modelos y relaciones para la base de datos:
-  - [ ] Usuario (nombre, email, contraseña, avatar?, ...
-  - [ ] Canción (titulo, lista de artistas, duracion, archivo de sonido por URL???, ...)
-  - [ ] Playlist (contiene titulo, canciones, ...)
-  - [ ] Artista (nombre (y apellidos? para personas, no bandas))
-- [ ] View de canciones, donde se listan todas las canciones de la web.
+- [x] Modelos y relaciones para la base de datos:
+  - [x] Usuario
+  - [x] Canción
+  - [x] Playlist
+  - [x] Artista
+- [x] View de canciones, donde se listan todas las canciones de la web (faltan cosas).
 - [ ] View de playlists, donde se muestran las playlists del usuario.
 - [ ] View de playlist, donde se listan las canciones de la playlist dada.
 - [ ] ?
