@@ -1,7 +1,7 @@
 from django.contrib.auth.models import User
 from django.core.handlers.asgi import FileResponse
 from django.db.models.fields import return_None
-from django.http import HttpResponse, JsonResponse
+from django.http import HttpResponse, JsonResponse, HttpResponseRedirect
 from django.shortcuts import render
 from django.template.loader import render_to_string
 
@@ -63,7 +63,7 @@ def procesarDatosFormulario(request):
         if nombre and correo and contra:
             usuario = User.objects.create_user(username=nombre, email=correo, password=contra)
             usuario.save()
-            return HttpResponse(f'Hola {nombre}, bienvenido a musify!')
+            return HttpResponseRedirect("/login")
         else:
             return HttpResponse('Fallo a la hora de registrar los datos')
     return HttpResponse('Metodo no permitido', status=405)
