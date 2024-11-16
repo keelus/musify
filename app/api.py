@@ -18,11 +18,11 @@ def getAudioInformacion(request, audioID):
 
 def getAudioArchivo(request, audioID):
     archivo = Cancion.objects.get(id=audioID).archivo
-    return FileResponse(archivo, content_type="audio/mpeg")
+    return FileResponse(archivo, content_type="audio/ogg")
 
 def getAudioCover(request, audioID):
     archivo = Cancion.objects.get(id=audioID).cover
-    return FileResponse(archivo, content_type="image/jpeg")
+    return FileResponse(archivo, content_type="image/webp")
 
 # Apartado sesiones
 def cerrarSesion(request):
