@@ -1,3 +1,4 @@
+from django.contrib.auth.models import User
 from django.core.handlers.asgi import FileResponse
 from django.db.models.fields import return_None
 from django.http import HttpResponse, JsonResponse
@@ -58,8 +59,10 @@ def procesarDatosFormulario(request):
     if request.method == "POST":
         nombre = request.POST.get("nombre")
         correo = request.POST.get("correo")
-        contra = request.POST.get("contrato")
+        contra = request.POST.get("contra")
         if nombre and correo and contra:
+            usuario = User.objects.create_user(username=nombre, email=correo, password=contra)
+            usuario.save()
             return HttpResponse(f'Hola {nombre}, bienvenido a musify!')
         else:
             return HttpResponse('Fallo a la hora de registrar los datos')

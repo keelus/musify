@@ -19,5 +19,6 @@ urlpatterns = [
     path('api/cancion/<str:audioID>/cover', view=api.getAudioCover, name="audio_cover"),
 
     path('api/sesion/cerrar', view=api.cerrarSesion, name="audio"),
+    path('api/sesion/iniciar', view=api.iniciarSesion, name="inicio"),
 ]
 

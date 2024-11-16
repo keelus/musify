@@ -1,5 +1,6 @@
+from django.contrib.auth import authenticate, login
 from django.core.handlers.asgi import FileResponse
-from django.http import HttpResponseRedirect, JsonResponse
+from django.http import HttpResponseRedirect, JsonResponse, HttpResponse
 from app.models import Cancion
 
 # Devuelve un audio de ejemplo, simula por ahora el BLOB de la BD
@@ -25,4 +26,20 @@ def getAudioCover(request, audioID):
 # Apartado sesiones
 def cerrarSesion(request):
     return HttpResponseRedirect("/login")
+
+def iniciarSesion(request):
+    if request.method == "POST":
+        nombre = request.POST.get("usuario")
+        contra = request.POST.get("contra")
+        if nombre and contra:
+            usuario = authenticate(request, username=nombre, password=contra) # TODO: hacer que se pueda iniciar sesion
+            if usuario is not None:
+                login(request, usuario)
+                print(usuario, contra)
+                return HttpResponseRedirect("/")
+            else:
+                return HttpResponse('Usuario o contraseña incorrectos', status=401)
+        else:
+            return HttpResponse('Fallo a la hora de registrar los datos', status=400)
+    return HttpResponse('Método no permitido', status=405)
 
