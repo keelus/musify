@@ -1,4 +1,5 @@
 from django.contrib.auth import authenticate, login
+from django.contrib.auth.models import User
 from django.core.handlers.asgi import FileResponse
 from django.http import HttpResponseRedirect, JsonResponse, HttpResponse
 from app.models import Cancion
@@ -42,3 +43,15 @@ def iniciarSesion(request):
             return HttpResponse('Fallo a la hora de registrar los datos', status=400)
     return HttpResponse('Método no permitido', status=405)
 
+def procesarDatosFormulario(request):
+    if request.method == "POST":
+        nombre = request.POST.get("nombre")
+        correo = request.POST.get("correo")
+        contra = request.POST.get("contra")
+        if nombre and correo and contra:
+            usuario = User.objects.create_user(username=nombre, email=correo, password=contra)
+            usuario.save()
+            return HttpResponseRedirect("/login")
+        else:
+            return HttpResponse('Fallo a la hora de registrar los datos')
+    return HttpResponse('Metodo no permitido', status=405)
