@@ -1,7 +1,6 @@
 from django.db import models
 from django.db.models import ManyToManyField
 
-
 class Usuario(models.Model):
     objects = models.Manager() # Para que el LSP no me de error
 
@@ -25,9 +24,10 @@ class Cancion(models.Model):
     objects = models.Manager()
 
     nombre = models.CharField(max_length = 100)
-    archivo = models.FileField(upload_to="./archibosBd/imagenes")
-    cover = models.FileField(upload_to="./archivosBd/imagenes/")
     artistas = models.ManyToManyField(Artista)
+
+    archivo = models.URLField()
+    cover = models.URLField()
 
     def __str__(self):
         artistasVisual = []

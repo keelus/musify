@@ -8,10 +8,6 @@ from django.template.loader import render_to_string
 from app.models import Cancion
 
 def pagina(request, archivo_contenido, contexto_contenido, mostrar_completa):
-    for song in Cancion.objects.all():
-        song.archivo.name = song.archivo.name.split(".")[0] + ".ogg"
-        song.save()
-
     if mostrar_completa:
         return render(request, "index.html", {
             "seccionActiva": archivo_contenido,

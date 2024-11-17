@@ -3,6 +3,9 @@ from django.contrib.auth.models import User
 from django.core.handlers.asgi import FileResponse
 from django.http import HttpResponseRedirect, JsonResponse, HttpResponse
 from app.models import Cancion
+import requests
+
+ASSET_LOCATION = "https://6739df0f568f31ee4f8bd20a--deluxe-pika-39355f.netlify.app/"
 
 # Devuelve un audio de ejemplo, simula por ahora el BLOB de la BD
 def getAudioInformacion(request, audioID):
@@ -18,11 +21,21 @@ def getAudioInformacion(request, audioID):
 
 def getAudioArchivo(request, audioID):
     archivo = Cancion.objects.get(id=audioID).archivo
-    return FileResponse(archivo, content_type="audio/ogg")
+    url = ASSET_LOCATION + "audios/" + archivo
+    respuesta = requests.get(url)
+
+    if respuesta.ok:
+        contenido = respuesta.content
+        return HttpResponse(contenido, content_type="audio/ogg")
 
 def getAudioCover(request, audioID):
     archivo = Cancion.objects.get(id=audioID).cover
-    return FileResponse(archivo, content_type="image/webp")
+    url = ASSET_LOCATION + "imagenes/" + archivo
+    respuesta = requests.get(url)
+
+    if respuesta.ok:
+        contenido = respuesta.content
+        return HttpResponse(contenido, content_type="image/webp")
 
 # Apartado sesiones
 def cerrarSesion(request):
