@@ -7,6 +7,9 @@ import requests
 
 ASSET_LOCATION = "https://6739df0f568f31ee4f8bd20a--deluxe-pika-39355f.netlify.app/"
 
+audio_cache = {}
+cover_cache = {}
+
 # Devuelve un audio de ejemplo, simula por ahora el BLOB de la BD
 def getAudioInformacion(request, audioID):
     cancion = Cancion.objects.get(id=audioID)
@@ -20,21 +23,29 @@ def getAudioInformacion(request, audioID):
     })
 
 def getAudioArchivo(request, audioID):
+    if audioID in audio_cache:
+        return HttpResponse(audio_cache[audioID], content_type="audio/ogg")
+
     archivo = Cancion.objects.get(id=audioID).archivo
     url = ASSET_LOCATION + "audios/" + archivo
     respuesta = requests.get(url)
 
     if respuesta.ok:
         contenido = respuesta.content
+        audio_cache[audioID] = contenido
         return HttpResponse(contenido, content_type="audio/ogg")
 
 def getAudioCover(request, audioID):
+    if audioID in cover_cache:
+        return HttpResponse(cover_cache[audioID], content_type="image/webp")
+
     archivo = Cancion.objects.get(id=audioID).cover
     url = ASSET_LOCATION + "imagenes/" + archivo
     respuesta = requests.get(url)
 
     if respuesta.ok:
         contenido = respuesta.content
+        cover_cache[audioID] = contenido
         return HttpResponse(contenido, content_type="image/webp")
 
 # Apartado sesiones
