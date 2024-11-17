@@ -2,13 +2,11 @@ from django.contrib.auth import authenticate, login
 from django.contrib.auth.models import User
 from django.core.handlers.asgi import FileResponse
 from django.http import HttpResponseRedirect, JsonResponse, HttpResponse
+from django.core.cache import cache
 from app.models import Cancion
 import requests
 
-ASSET_LOCATION = "https://6739df0f568f31ee4f8bd20a--deluxe-pika-39355f.netlify.app/"
-
-audio_cache = {}
-cover_cache = {}
+SERVIDOR_NETLIFY = "https://6739df0f568f31ee4f8bd20a--deluxe-pika-39355f.netlify.app"
 
 # Devuelve un audio de ejemplo, simula por ahora el BLOB de la BD
 def getAudioInformacion(request, audioID):
@@ -23,29 +21,31 @@ def getAudioInformacion(request, audioID):
     })
 
 def getAudioArchivo(request, audioID):
-    if audioID in audio_cache:
-        return HttpResponse(audio_cache[audioID], content_type="audio/ogg")
+    llave_cache = f'audio_{audioID}'
+    contenido_cache = cache.get(llave_cache)
+    if contenido_cache:
+        return HttpResponse(contenido_cache, content_type="audio/ogg")
 
     archivo = Cancion.objects.get(id=audioID).archivo
-    url = ASSET_LOCATION + "audios/" + archivo
-    respuesta = requests.get(url)
+    respuesta = requests.get(f'{SERVIDOR_NETLIFY}/audios/{archivo}')
 
     if respuesta.ok:
         contenido = respuesta.content
-        audio_cache[audioID] = contenido
+        cache.set(llave_cache, contenido)
         return HttpResponse(contenido, content_type="audio/ogg")
 
 def getAudioCover(request, audioID):
-    if audioID in cover_cache:
-        return HttpResponse(cover_cache[audioID], content_type="image/webp")
+    llave_cache = f'cover_{audioID}'
+    contenido_cache = cache.get(llave_cache)
+    if contenido_cache:
+        return HttpResponse(contenido_cache, content_type="image/webp")
 
     archivo = Cancion.objects.get(id=audioID).cover
-    url = ASSET_LOCATION + "imagenes/" + archivo
-    respuesta = requests.get(url)
+    respuesta = requests.get(f'{SERVIDOR_NETLIFY}/imagenes/{archivo}')
 
     if respuesta.ok:
         contenido = respuesta.content
-        cover_cache[audioID] = contenido
+        cache.set(llave_cache, contenido)
         return HttpResponse(contenido, content_type="image/webp")
 
 # Apartado sesiones
