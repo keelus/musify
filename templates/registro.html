@@ -4,11 +4,10 @@
 <head>
 	<meta charset="UTF-8">
 	<title>Registro</title>
-	<link rel="stylesheet" href="/static/css/registro.css">
+	<link rel="stylesheet" href="../static/css/registro.css">
 </head>
 
 <body>
-	/* Hacer que el register mande el registro a la bd o a algun lado, pero no a la nada.*/
 	<h1>REGISTRO DE USUARIO</h1>
 
 	<form action="procesarDatos" method="post" id="registro-1">
@@ -21,7 +20,7 @@
 		<br><br>
 
 		<label for="correo">Correo electronico:</label>
-		<input type="text" name="correo" id="correo" required>
+		<input type="email" name="correo" id="correo" required>
 
 		<br><br>
 
@@ -35,7 +34,7 @@
 
 		<br><br>
 
-		<input type="submit" value="Confirmar registro">
+		<input type="submit" value="Confirmar registro" id="boton_mandar">
 
 	</form>
 </body>
