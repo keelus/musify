@@ -82,7 +82,9 @@ $(document).ready(() => {
 	const reproductor = new Reproductor();
 
 	$(document).on("click", ".cancion", (e) => {
-		const cancionId = $(e.target).data("cancion-id")
+		const elementoCancion = $(e.target).closest(".cancion")
+		const cancionId = $(elementoCancion).data("cancion-id")
+
 		reproductor.reproducirCancion(cancionId)
 	})
 
