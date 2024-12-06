@@ -1,6 +1,14 @@
 <section id="contenido">
 	<h1>Tus playlists</h1>
 	Aqui irian las playlists: <br />
-	<button class="boton-playlist" data-playlist-id="playlist1">Playlist1</button><br />
-	<button class="boton-playlist" data-playlist-id="Otras">Otras</button>
+	 <ul>
+        {% for playlist in playlists %}
+            <li>
+                <button class="boton-playlist">{{ playlist.nombre }}</button>
+                
+            </li>
+        {% empty %}
+            <li>No hay playlists disponibles.</li>
+        {% endfor %}
+    </ul>
 </section>

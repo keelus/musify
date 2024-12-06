@@ -5,7 +5,8 @@ from django.http import HttpResponse, JsonResponse, HttpResponseRedirect
 from django.shortcuts import render
 from django.template.loader import render_to_string
 
-from app.models import Cancion
+from app.models import Cancion, Playlist
+
 
 def pagina(request, archivo_contenido, contexto_contenido, mostrar_completa):
     if mostrar_completa:
@@ -41,7 +42,17 @@ def paginaCanciones(request):
 
 # Pagina de playlists
 def paginaPlaylists(request):
-    return pagina(request, "playlists.html", {}, "reducido" not in request.headers)
+    playlists = []
+
+    for playlistObjetoBd in Playlist.objects.all():
+        playlist = {
+            "id": playlistObjetoBd.id,
+            "nombre": playlistObjetoBd.nombre,
+        }
+        playlists.append(playlist)
+    return pagina(request, "playlists.html", {
+        "playlists": playlists
+    }, "reducido" not in request.headers)
 
 # Pagina de playlist
 def paginaPlaylist(request, playlistID):

@@ -44,10 +44,4 @@ class Playlist(models.Model):
     def __str__(self):
         return str(self.nombre)
 
-    def aniadir_cancion(self,cancion):
-        if isinstance(cancion,Cancion):
-            self.canciones.add(cancion)
-    def borrar_cancion(self,cancion):
-        if isinstance(cancion,Cancion):
-            self.canciones.remove(cancion)
 
