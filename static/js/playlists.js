@@ -3,3 +3,6 @@ $(document).on("click", ".boton-playlist", (e) => {
 	const playlistID = $(e.target).data("playlist-id");
 	reemplazarContenido(`/playlist/${playlistID}`);
 })
+
+
+

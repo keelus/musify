@@ -11,3 +11,7 @@
     border-bottom: #1ed760;
     color: black;
 }
+
+ul {
+    list-style-type: none;
+}
