@@ -1,26 +1,25 @@
 <link rel="stylesheet" href="../static/css/playlists.css">
 <section id="contenido">
-    <div id="div_busc">
-        <h2>Buscador de canciones</h2>
-        <label for="buscador">buscador: </label>
-        <input type="text" name="buscador" id="label_buscador">
-        
-        <input id="btn_enviar" type="submit" value="BUSCAR">
-    </div>
+	<div id="div_busc">
+		<h2>Buscador de canciones</h2>
+		<label for="buscador">buscador: </label>
+		<input type="text" name="buscador" id="label_buscador">
+
+		<input id="btn_enviar" type="submit" value="BUSCAR">
+	</div>
 
 	<h1>Tus playlists</h1>
 	Aqui irian las playlists: <br />
-	 <ul>
-        {% for playlist in playlists %}
-            <li>
-                <a href="{% url 'inicio' playlistID=playlist.id %}">
-                    <button class="boton-playlist">{{ playlist.nombre }}</button>
-                </a>    
-
-            </li>
-        {% empty %}
-            <li>No hay playlists disponibles.</li>
-        {% endfor %}
-    </ul>
+	<ul>
+		{% for playlist in playlists %}
+		<li>
+			<button data-seccion-destino="playlist" data-playlist-id="1" class="boton-playlist">
+				{{playlist.nombre}}
+			</button>
+		</li>
+		{% empty %}
+		<li>No hay playlists disponibles.</li>
+		{% endfor %}
+	</ul>
 </section>
 <script src="../static/js/buscadorPlaylist.js"></script>

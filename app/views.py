@@ -57,10 +57,26 @@ def paginaPlaylists(request):
 # Pagina de playlist
 def paginaPlaylist(request, playlistID):
     playlist = get_object_or_404(Playlist, pk=playlistID)
-    canciones=playlist.canciones.all()
+    canciones = []
+
+    for cancionObjetoBd in playlist.canciones.all():
+        cancion = {
+            "id": cancionObjetoBd.id,
+            "nombre": cancionObjetoBd.nombre,
+            "coverUrl": cancionObjetoBd.cover,
+            "artistas": []
+        }
+
+        for artistaObjetoBd in cancionObjetoBd.artistas.all():
+            cancion["artistas"].append({
+                "id": artistaObjetoBd.id,
+                "nombre": artistaObjetoBd.nombre,
+            })
+        canciones.append(cancion)
+
     return pagina(request, "playlist.html", {
         "playlist": playlist,
-        canciones:canciones,
+        "canciones": canciones,
     }, "reducido" not in request.headers)
 
 def registrarse(request):

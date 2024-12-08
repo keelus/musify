@@ -1,24 +1,27 @@
 <section id="contenido">
 	<h1>{{ playlist.nombre }}</h1>
-    <hr>
-    <div id="div_busc">
-        <h2>Buscador de canciones</h2>
-        <label for="buscador">buscador: </label>
-        <input type="text" name="buscador" id="label_buscador">
-        
-        <input id="btn_enviar" type="submit" value="BUSCAR">
-    </div>
+	<hr>
+	<div id="div_busc">
+		<h2>Buscador de canciones</h2>
+		<label for="buscador">buscador: </label>
+		<input type="text" name="buscador" id="label_buscador">
 
-    <h1>Mis Canciones</h1>
-	{% for cancion in playlist.canciones.all %}
+		<input id="btn_enviar" type="submit" value="BUSCAR">
+	</div>
+
+	<h1>Mis Canciones</h1>
+	{% for cancion in canciones %}
 	<div class="cancion" data-cancion-id="{{ cancion.id }}">
 		<div class="cover" style="--cover:url('/api/cancion/{{ cancion.id }}/cover')"></div>
 		<div class="informacion">
 			<span class="titulo">{{ cancion.nombre }}</span>
-			
+			<span class="artista">
+				{% for artista in cancion.artistas %}
+				{{ artista.nombre }}{% if not forloop.last %},{% endif %}
+				{% endfor %}
+			</span>
 		</div>
 	</div>
 	{% endfor %}
 </section>
 <script src="../static/js/Buscador.js"></script>
-

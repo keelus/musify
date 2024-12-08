@@ -73,6 +73,10 @@ $(".boton-seccion").on("click", (e) => {
 		case "playlists":
 			reemplazarContenido("/playlists");
 			break;
+		case "playlist":
+			const playlistId = $(e.target).data("playlist-id")
+			reemplazarContenido(`/playlist/${playlistId}`);
+			break;
 	}
 })
 
