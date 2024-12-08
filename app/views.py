@@ -48,6 +48,7 @@ def paginaPlaylists(request):
         playlist = {
             "id": playlistObjetoBd.id,
             "nombre": playlistObjetoBd.nombre,
+            "cover": playlistObjetoBd.cover,
         }
         playlists.append(playlist)
     return pagina(request, "playlists.html", {

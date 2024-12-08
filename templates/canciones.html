@@ -1,13 +1,11 @@
 <section id="contenido" class="contenido-canciones">
+	<h1>Indice de canciones</h1>
 	<div id="div_busc">
-		<h2>Buscador de canciones</h2>
-		<label for="buscador">buscador: </label>
-		<input type="text" name="buscador" id="label_buscador">
-
+		<label for="buscador">Buscar una cancion: </label>
+		<input type="text" name="buscador" id="label_buscador" placeholder="Nombre, artista...">
 		<input id="btn_enviar" type="submit" value="BUSCAR">
 	</div>
-
-	<h1>Indice de canciones</h1>
+	<br>
 	{% for cancion in canciones %}
 	<div class="cancion" data-cancion-id="{{ cancion.id }}">
 		<div class="cover" style="--cover:url('/api/cancion/{{ cancion.id }}/cover')"></div>

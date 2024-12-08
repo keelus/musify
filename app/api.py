@@ -1,9 +1,11 @@
+import json
 from django.contrib.auth import authenticate, login
 from django.contrib.auth.models import User
 from django.core.handlers.asgi import FileResponse
 from django.http import HttpResponseRedirect, JsonResponse, HttpResponse
+from django.views.decorators.csrf import  csrf_exempt
 from django.core.cache import cache
-from app.models import Cancion
+from app.models import Cancion, Playlist
 import requests
 
 SERVIDOR_NETLIFY = "https://6739df0f568f31ee4f8bd20a--deluxe-pika-39355f.netlify.app"
@@ -79,3 +81,39 @@ def procesarDatosFormulario(request):
         else:
             return HttpResponse('Fallo a la hora de registrar los datos')
     return HttpResponse('Metodo no permitido', status=405)
+
+
+@csrf_exempt
+def playlistActualizarInformacion(request, playlistID):
+    if request.method == "POST":
+        datos = json.loads(request.body)
+
+        nuevo_nombre : str = datos["nombre"]
+
+        # Se verifica en cliente, pero
+        # tambien en servidor.
+        if nuevo_nombre.lstrip() == "":
+            return HttpResponse(b"El nombre no puede estar vacio.", status=403);
+
+        nueva_cover = datos["cover"]
+
+        playlist = Playlist.objects.get(id = playlistID)
+        playlist.nombre = nuevo_nombre
+        playlist.cover = nueva_cover
+        playlist.save()
+
+        return HttpResponse(b'OK', status=200)
+        
+    return HttpResponse('Metodo no permitido', status=405)
+
+def getPlaylistInformacion(request, playlistID):
+    playlist = Playlist.objects.get(id=playlistID)
+    canciones = []
+    for cancion in playlist.canciones.all():
+        canciones.append({
+            "id": cancion.id,
+        })
+
+    return JsonResponse({
+        "canciones": canciones
+    })

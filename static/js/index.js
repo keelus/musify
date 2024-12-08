@@ -88,8 +88,12 @@ $(document).ready(() => {
 	$(document).on("click", ".cancion", (e) => {
 		const elementoCancion = $(e.target).closest(".cancion")
 		const cancionId = $(elementoCancion).data("cancion-id")
+		const playlistId = $(elementoCancion).data("playlist-id")
 
-		reproductor.reproducirCancion(cancionId)
+		if (playlistId === undefined)
+			reproductor.reproducirCancion(cancionId)
+		else
+			reproductor.reproducirCancion(cancionId, playlistId)
 	})
 
 	$(document).on("cambioDePagina", () => reproductor.gestionarCambioPagina())

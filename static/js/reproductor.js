@@ -15,6 +15,11 @@ class Reproductor {
 		this.audioDom = null
 		this.cancionActual = null
 
+		this.volumenActual = 1.0
+
+		this.playlistActual = null
+		this.indiceCancionActual = null
+
 		this.arrastrandoBarra = false
 		this.arrastrandoBarraVolumen = false
 
@@ -25,6 +30,12 @@ class Reproductor {
 	inicializarEventos() {
 		$(".parte-controles button#playPausa").on("click", () => {
 			this.reproducirPararCancion()
+		})
+		$(".parte-controles button#anterior").on("click", () => {
+			this.anteriorCancion()
+		})
+		$(".parte-controles button#siguiente").on("click", () => {
+			this.siguienteCancion()
 		})
 
 		$(".parte-controles .barra").on("mousedown", (e) => {
@@ -65,16 +76,16 @@ class Reproductor {
 		if (this.audioDom === null || !this.arrastrandoBarraVolumen) return;
 
 		const barraX = $(".parte-volumen .barra").offset().left;
-
 		const x = ratonX - barraX;
-
 		const barraAncho = $(".parte-volumen .barra").width();
 
-		const nuevoVolumen = Math.max(0.00, Math.min(x / barraAncho, 100.00))
+		const nuevoVolumen = Math.max(0.00, Math.min(x / barraAncho, 1.00))
+
+		this.volumenActual = nuevoVolumen;
 		this.audioDom.volume = nuevoVolumen;
 	}
 
-	domRender() {
+	async domRender() {
 		// Actualizar la informacion necesaria. Se ejecuta una vez por frame
 		if (this.audioDom !== null) {
 			const duracion = this.audioDom.duration;
@@ -90,7 +101,7 @@ class Reproductor {
 			$(".parte-volumen .volumen-porcentaje").text(`${Math.floor(this.audioDom.volume * 100)}%`);
 
 			if (this.audioDom.ended) {
-				console.log("Audio fin")
+				await this.siguienteCancion()
 			}
 
 			$(".parte-controles button#playPausa").toggleClass("pausado", this.pausado)
@@ -102,16 +113,30 @@ class Reproductor {
 
 		$(".parte-controles button#playPausa").prop("disabled", this.audioDom === null)
 
-		const esPlaylist = false;
-		$(".parte-controles button#anterior").prop("disabled", !esPlaylist || this.audioDom === null)
-		$(".parte-controles button#siguiente").prop("disabled", !esPlaylist || this.audioDom === null)
+		$(".parte-controles button#anterior").prop("disabled", !this.playlistActual || this.audioDom === null)
+		$(".parte-controles button#siguiente").prop("disabled", !this.playlistActual || this.audioDom === null)
 
 		$(".parte-controles .progreso").toggleClass("deshabilitado", this.audioDom === null)
 
 		this.animFrame = requestAnimationFrame(() => this.domRender())
 	}
 
-	async reproducirCancion(id) {
+	async reproducirCancion(id, playlistId = -1) {
+		if (playlistId === -1) {
+			const quitarPlaylist = this.playlistActual !== null
+			this.reproducirCancionUnica(id, quitarPlaylist)
+		} else
+			this.reproducirPlaylist(id, playlistId)
+	}
+
+	async reproducirCancionUnica(id, quitarPlaylist = false) {
+		// Si se hace click en una cancion fuera de una playlist,
+		// se quita la playlist actual (si se esta reproduciendo).
+		if (quitarPlaylist) {
+			this.playlistActual = null;
+			this.indiceCancionActual = null;
+		}
+
 		// Conseguir informacion sobre la cancion
 		let cancion = {
 			id,
@@ -139,6 +164,7 @@ class Reproductor {
 
 		// Crear nuevo elemento de <Audio> con la url de la cancion
 		this.audioDom = new Audio(cancion.url)
+		this.audioDom.volume = this.volumenActual
 		this.audioDom.play()
 		if (this.pausado)
 			this.reproducirPararCancion()
@@ -152,6 +178,56 @@ class Reproductor {
 		// Colocar como activa en la pagina a la cancion actual
 		this.gestionarCambioPagina()
 	}
+
+	async reproducirPlaylist(cancionId, playlistId) {
+		await $.ajax({
+			url: `/api/playlist/${playlistId}/informacion`,
+			success: async (datos) => {
+				this.playlistActual = {
+					id: playlistId,
+					canciones: datos["canciones"]
+				}
+			},
+			error: function(xhr, estado, error) {
+				console.error("Error al conseguir informacion de la playlist: ", error)
+			}
+		})
+
+		// Buscar la ID especifica de la cancion clickeada
+		let indice = this.playlistActual.canciones.findIndex((cancion) => {
+			return cancion["id"] === cancionId;
+		})
+
+		if (indice === -1)
+			indice = 0;
+
+		this.indiceCancionActual = indice;
+		const id = this.playlistActual.canciones[indice]["id"];
+		this.reproducirCancionUnica(id)
+	}
+
+	async anteriorCancion() {
+		if (this.playlistActual === null)
+			return;
+
+		this.indiceCancionActual--;
+		if (this.indiceCancionActual < 0)
+			this.indiceCancionActual = this.playlistActual.canciones.length - 1;
+
+		await this.reproducirCancionUnica(this.playlistActual.canciones[this.indiceCancionActual]["id"])
+	}
+
+	async siguienteCancion() {
+		if (this.playlistActual === null)
+			return;
+
+		this.indiceCancionActual++;
+		if (this.indiceCancionActual >= this.playlistActual.canciones.length)
+			this.indiceCancionActual = 0;
+
+		await this.reproducirCancionUnica(this.playlistActual.canciones[this.indiceCancionActual]["id"])
+	}
+
 
 	reproducirPararCancion() {
 		if (this.audioDom === null) return;
@@ -171,6 +247,9 @@ class Reproductor {
 		$(".cancion").removeClass("activa")
 
 		// Colocar el estado de la cancion clickeada como activa
-		$(`.cancion[data-cancion-id=${this.cancionActual.id}]`).addClass("activa")
+		if (this.playlistActual === null)
+			$(`.cancion[data-cancion-id=${this.cancionActual.id}]:not([data-playlist-id])`).addClass("activa")
+		else
+			$(`.cancion[data-cancion-id=${this.cancionActual.id}][data-playlist-id=${this.playlistActual.id}]`).addClass("activa")
 	}
 }

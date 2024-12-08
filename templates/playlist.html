@@ -1,17 +1,30 @@
-<section id="contenido">
-	<h1>{{ playlist.nombre }}</h1>
+<section id="contenido" class="playlist">
+	<header class="principal mostrar">
+		<img class="imagen" id="playlist-cover" src="{{ playlist.cover }}" />
+		<div class="informacion">
+			<h1 id="playlist-nombre">{{ playlist.nombre }}</h1>
+			<span>Playlist creada por ti</span>
+			<button id="playlist-editar">Editar informacion</button>
+		</div>
+	</header>
+	<header class="edicion">
+		<h1>Editando la playlist</h1>
+		<div class="doble">
+			<label>Nombre de la playlist: </label>
+			<input placeholder="Nombre de la playlist..." id="input-playlist-nombre" />
+		</div>
+		<div class="doble">
+			<label>URL de la imagen (opcional): </label>
+			<input placeholder="URL de la imagen..." id="input-playlist-cover" />
+		</div>
+		<div>
+			<button class="cancelar" id="playlist-cancelar">Cancelar</button>
+			<button id="playlist-guardar" data-playlist-id="{{ playlist.id }}">Guardar informacion</button>
+		</div>
+	</header>
 	<hr>
-	<div id="div_busc">
-		<h2>Buscador de canciones</h2>
-		<label for="buscador">buscador: </label>
-		<input type="text" name="buscador" id="label_buscador">
-
-		<input id="btn_enviar" type="submit" value="BUSCAR">
-	</div>
-
-	<h1>Mis Canciones</h1>
 	{% for cancion in canciones %}
-	<div class="cancion" data-cancion-id="{{ cancion.id }}">
+	<div class="cancion" data-cancion-id="{{ cancion.id }}" data-playlist-id="{{ playlist.id }}">
 		<div class="cover" style="--cover:url('/api/cancion/{{ cancion.id }}/cover')"></div>
 		<div class="informacion">
 			<span class="titulo">{{ cancion.nombre }}</span>
@@ -24,4 +37,3 @@
 	</div>
 	{% endfor %}
 </section>
-<script src="../static/js/Buscador.js"></script>

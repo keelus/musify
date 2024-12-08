@@ -40,7 +40,9 @@ class Playlist(models.Model):
 
     nombre = models.CharField(max_length = 100)
     autor = models.ForeignKey(Usuario, on_delete=models.CASCADE)
-    canciones=models.ManyToManyField(Cancion, blank=True)
+    canciones = models.ManyToManyField(Cancion, blank=True)
+    cover = models.URLField()
+
     def __str__(self):
         return str(self.nombre)
 

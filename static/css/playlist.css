@@ -1,0 +1,71 @@
+.playlist>header {
+	display: none;
+	align-items: center;
+	gap: 20px;
+}
+
+.playlist>header.mostrar {
+	display: flex;
+}
+
+.playlist>header>.imagen {
+	width: 125px;
+	height: 125px;
+	border-radius: 5px;
+	background: #000;
+	display: block;
+	background-image: var(--imagen);
+	background-size: cover;
+}
+
+.playlist>header>.informacion {
+	display: flex;
+	flex-direction: column;
+	gap: 10px;
+}
+
+.playlist>header>.informacion>h1 {
+	margin: 0;
+	font-size: 35px;
+}
+
+.playlist>header button {
+	border: none;
+	border-radius: 5px;
+	background-color: #1ed760;
+	padding: 7.5px 12.5px;
+	font-weight: bold;
+	color: #000;
+	width: fit-content;
+	transition: all .1s linear;
+	display: inline-block;
+}
+
+.playlist>header button:hover {
+	cursor: pointer;
+	opacity: .8;
+}
+
+.playlist>header button.cancelar {
+	background-color: #4a4a4a;
+	color: #fff;
+}
+
+.playlist>header.edicion {
+	justify-content: flex-start;
+	align-items: flex-start;
+	flex-direction: column;
+}
+
+.playlist>header.edicion>h1 {
+	margin: 0;
+}
+
+.playlist>header.edicion>.doble {
+	display: flex;
+	gap: 10px;
+}
+
+.playlist>header.edicion>.doble>label {
+	min-width: 300px;
+}
