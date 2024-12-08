@@ -99,9 +99,12 @@ class Reproductor {
 			$(".parte-controles .progreso .tiempo-maximo").text(formatearSegundos(0))
 		}
 
-		$(".parte-controles button#anterior").prop("disabled", this.audioDom === null)
+
 		$(".parte-controles button#playPausa").prop("disabled", this.audioDom === null)
-		$(".parte-controles button#siguiente").prop("disabled", this.audioDom === null)
+
+		const esPlaylist = false;
+		$(".parte-controles button#anterior").prop("disabled", !esPlaylist || this.audioDom === null)
+		$(".parte-controles button#siguiente").prop("disabled", !esPlaylist || this.audioDom === null)
 
 		$(".parte-controles .progreso").toggleClass("deshabilitado", this.audioDom === null)
 
