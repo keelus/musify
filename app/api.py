@@ -5,7 +5,7 @@ from django.core.handlers.asgi import FileResponse
 from django.http import HttpResponseRedirect, JsonResponse, HttpResponse
 from django.views.decorators.csrf import  csrf_exempt
 from django.core.cache import cache
-from app.models import Cancion, Playlist
+from app.models import Cancion, Playlist, Usuario
 import requests
 
 SERVIDOR_NETLIFY = "https://6739df0f568f31ee4f8bd20a--deluxe-pika-39355f.netlify.app"
@@ -117,3 +117,19 @@ def getPlaylistInformacion(request, playlistID):
     return JsonResponse({
         "canciones": canciones
     })
+
+@csrf_exempt
+def playlistCrear(request):
+    if request.method == "POST":
+        usuario = Usuario.objects.get(nombre="usuario")
+        playlist = Playlist(
+            nombre = "Tu nueva playlist",
+            autor = usuario, # Temporal
+            cover = "https://media.tenor.com/BiEdW2zVchkAAAAM/cat.gif",
+        )
+
+        playlist.save()
+
+        id = str(playlist.pk)
+        return HttpResponse(id, status=200)
+    return HttpResponse('Metodo no permitido', status=405)

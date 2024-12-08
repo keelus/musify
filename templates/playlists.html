@@ -8,9 +8,11 @@
 		<input id="btn_enviar" type="submit" value="BUSCAR">
 	</div>
 	<br>
-	<div class="lista-playlists">
+	<button id="boton-crear-playlist">Crear una playlist</button>
+	<br>
+	<div style="margin-top:20px;" class="lista-playlists">
 		{% for playlist in playlists %}
-		<div data-seccion-destino="playlist" data-playlist-id="1" class="boton-playlist">
+		<div data-seccion-destino="playlist" data-playlist-id="{{ playlist.id }}" class="boton-playlist">
 			<img src="{{ playlist.cover }}" />
 			<span>{{ playlist.nombre }}</span>
 		</div>
