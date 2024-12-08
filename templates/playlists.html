@@ -13,8 +13,10 @@
 	 <ul>
         {% for playlist in playlists %}
             <li>
-                <button class="boton-playlist">{{ playlist.nombre }}</button>
-                
+                <a href="{% url 'inicio' playlistID=playlist.id %}">
+                    <button class="boton-playlist">{{ playlist.nombre }}</button>
+                </a>    
+
             </li>
         {% empty %}
             <li>No hay playlists disponibles.</li>

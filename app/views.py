@@ -2,7 +2,7 @@ from django.contrib.auth.models import User
 from django.core.handlers.asgi import FileResponse
 from django.db.models.fields import return_None
 from django.http import HttpResponse, JsonResponse, HttpResponseRedirect
-from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404
 from django.template.loader import render_to_string
 
 from app.models import Cancion, Playlist
@@ -56,8 +56,11 @@ def paginaPlaylists(request):
 
 # Pagina de playlist
 def paginaPlaylist(request, playlistID):
+    playlist = get_object_or_404(Playlist, pk=playlistID)
+    canciones=playlist.canciones.all()
     return pagina(request, "playlist.html", {
-        "playlistID": playlistID,
+        "playlist": playlist,
+        canciones:canciones,
     }, "reducido" not in request.headers)
 
 def registrarse(request):
