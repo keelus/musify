@@ -41,6 +41,15 @@
 	display: inline-block;
 }
 
+.playlist>header button.boton-rojo {
+	background-color: #d71e1e;
+	color: #fff;
+}
+
+.playlist>header button.boton-blanco {
+	background-color: #d1d1d1;
+}
+
 .playlist>header button:hover {
 	cursor: pointer;
 	opacity: .8;

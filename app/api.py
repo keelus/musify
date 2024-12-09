@@ -133,3 +133,23 @@ def playlistCrear(request):
         id = str(playlist.pk)
         return HttpResponse(id, status=200)
     return HttpResponse('Metodo no permitido', status=405)
+
+def playlistCancionesAnyadibles(request, playlistID):
+    playlist = Playlist.objects.get(id=playlistID)
+    canciones_en_playlist = []
+    canciones_anyadibles = []
+
+    for cancion in playlist.canciones.all():
+        canciones_en_playlist.append(cancion.id)
+
+    for cancion in Cancion.objects.all():
+        if cancion.id not in canciones_en_playlist:
+            canciones_anyadibles.append({
+                "id": cancion.id,
+                "nombre": cancion.nombre,
+                "coverUrl": cancion.cover,
+            })
+
+    return JsonResponse({
+        "canciones": canciones_anyadibles
+    })
