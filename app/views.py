@@ -42,9 +42,14 @@ def paginaCanciones(request):
 
 # Pagina de playlists
 def paginaPlaylists(request):
+    if not request.user.is_authenticated:
+        return pagina(request, "no-autorizado.html", {}, "reducido" not in request.headers)
+
+    usuario = request.user
+
     playlists = []
 
-    for playlistObjetoBd in Playlist.objects.all():
+    for playlistObjetoBd in Playlist.objects.filter(autor=usuario):
         playlist = {
             "id": playlistObjetoBd.id,
             "nombre": playlistObjetoBd.nombre,
@@ -57,8 +62,13 @@ def paginaPlaylists(request):
 
 # Pagina de playlist
 def paginaPlaylist(request, playlistID):
+    if not request.user.is_authenticated:
+        return pagina(request, "no-autorizado.html", {}, "reducido" not in request.headers)
+
+    usuario = request.user
+
     try:
-        playlist = get_object_or_404(Playlist, pk=playlistID)
+        playlist = get_object_or_404(Playlist, pk=playlistID, autor=usuario)
     except:
         return HttpResponse(b"La playlist no existe.", status=404)
 
@@ -88,6 +98,12 @@ def registrarse(request):
     return render(request, "registro.html")
 
 def login(request):
-    return render(request, "login.html")
+    usuario = request.GET.get("usuario") # Si el login falla, aqui se guarda el input
+    error = request.GET.get("error") # Si el login falla, aqui se guarda el input
+
+    return render(request, "login.html", {
+        "usuario": usuario,
+        "error": error,
+    })
 
 

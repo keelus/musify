@@ -1,13 +1,13 @@
 import json
-from django.contrib.auth import authenticate, login
+from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.models import User
 from django.core.handlers.asgi import FileResponse
 from django.db.models.query import django
 from django.http import HttpResponseRedirect, JsonResponse, HttpResponse
-from django.shortcuts import get_object_or_404
+from django.shortcuts import get_object_or_404, redirect, render
 from django.views.decorators.csrf import  csrf_exempt
 from django.core.cache import cache
-from app.models import Cancion, Playlist, Usuario
+from app.models import Cancion, Playlist
 import requests
 
 SERVIDOR_NETLIFY = "https://6739df0f568f31ee4f8bd20a--deluxe-pika-39355f.netlify.app"
@@ -54,6 +54,7 @@ def getAudioCover(request, audioID):
 
 # Apartado sesiones
 def cerrarSesion(request):
+    logout(request)
     return HttpResponseRedirect("/login")
 
 def iniciarSesion(request):
@@ -66,9 +67,12 @@ def iniciarSesion(request):
                 login(request, usuario)
                 return HttpResponseRedirect("/")
             else:
+                mensaje = "¡Las credenciales son incorrectas!"
+                return redirect(f"/login?usuario={nombre}&error={mensaje}")
                 return HttpResponse('Usuario o contraseña incorrectos', status=401)
         else:
-            return HttpResponse('Fallo a la hora de registrar los datos', status=400)
+            return redirect(f"/login?usuario={nombre}")
+            #return HttpResponse('Fallo a la hora de registrar los datos', status=400)
     return HttpResponse('Método no permitido', status=405)
 
 def procesarDatosFormulario(request):
@@ -87,6 +91,11 @@ def procesarDatosFormulario(request):
 
 @csrf_exempt
 def playlistActualizarInformacion(request, playlistID):
+    if not request.user.is_authenticated:
+        return HttpResponse("Inicia sesion primero.", status=401);
+
+    usuario = request.user
+
     if request.method == "POST":
         datos = json.loads(request.body)
 
@@ -99,31 +108,46 @@ def playlistActualizarInformacion(request, playlistID):
 
         nueva_cover = datos["cover"]
 
-        playlist = Playlist.objects.get(id = playlistID)
-        playlist.nombre = nuevo_nombre
-        playlist.cover = nueva_cover
-        playlist.save()
+        try:
+            playlist = Playlist.objects.get(id = playlistID, autor = usuario)
+            playlist.nombre = nuevo_nombre
+            playlist.cover = nueva_cover
+            playlist.save()
 
-        return HttpResponse(b'OK', status=200)
+            return HttpResponse(b'OK', status=200)
+        except:
+            return HttpResponse("La playlist no existe, o no es tuya.", status=404);
         
     return HttpResponse('Metodo no permitido', status=405)
 
 def getPlaylistInformacion(request, playlistID):
-    playlist = Playlist.objects.get(id=playlistID)
-    canciones = []
-    for cancion in reversed(playlist.canciones.all()):
-        canciones.append({
-            "id": cancion.id,
-        })
+    if not request.user.is_authenticated:
+        return HttpResponse("Inicia sesion primero.", status=401);
 
-    return JsonResponse({
-        "canciones": canciones
-    })
+    usuario = request.user
+
+    try:
+        playlist = Playlist.objects.get(id=playlistID, autor=usuario)
+        canciones = []
+        for cancion in reversed(playlist.canciones.all()):
+            canciones.append({
+                "id": cancion.id,
+            })
+
+        return JsonResponse({
+            "canciones": canciones
+        })
+    except:
+        return HttpResponse("La playlist no existe, o no es tuya.", status=404);
 
 @csrf_exempt
 def playlistCrear(request):
+    if not request.user.is_authenticated:
+        return HttpResponse("Inicia sesion primero.", status=401);
+
+    usuario = request.user
+
     if request.method == "POST":
-        usuario = Usuario.objects.get(nombre="usuario")
         playlist = Playlist(
             nombre = "Tu nueva playlist",
             autor = usuario, # Temporal
@@ -137,39 +161,56 @@ def playlistCrear(request):
     return HttpResponse('Metodo no permitido', status=405)
 
 def playlistEliminar(request, playlistID):
+    if not request.user.is_authenticated:
+        return HttpResponse("Inicia sesion primero.", status=401);
+
+    usuario = request.user
     try:
-        playlist = Playlist.objects.get(id=playlistID)
+        playlist = Playlist.objects.get(id=playlistID, autor=usuario)
     except:
-        return HttpResponse(b"La playlist no existe", status=404)
+        return HttpResponse(b"La playlist no existe o no es tuya.", status=404)
 
     playlist.delete()
     return HttpResponse(b"Ok", status=200)
 
 def playlistCancionesAnyadibles(request, playlistID):
-    playlist = Playlist.objects.get(id=playlistID)
-    canciones_en_playlist = []
-    canciones_anyadibles = []
+    if not request.user.is_authenticated:
+        return HttpResponse("Inicia sesion primero.", status=401);
 
-    for cancion in playlist.canciones.all():
-        canciones_en_playlist.append(cancion.id)
+    usuario = request.user
 
-    for cancion in Cancion.objects.all():
-        if cancion.id not in canciones_en_playlist:
-            canciones_anyadibles.append({
-                "id": cancion.id,
-                "nombre": cancion.nombre,
-                "coverUrl": cancion.cover,
-            })
+    try:
+        playlist = Playlist.objects.get(id=playlistID, autor=usuario)
+        canciones_en_playlist = []
+        canciones_anyadibles = []
 
-    return JsonResponse({
-        "canciones": canciones_anyadibles
-    })
+        for cancion in playlist.canciones.all():
+            canciones_en_playlist.append(cancion.id)
+
+        for cancion in Cancion.objects.all():
+            if cancion.id not in canciones_en_playlist:
+                canciones_anyadibles.append({
+                    "id": cancion.id,
+                    "nombre": cancion.nombre,
+                    "coverUrl": cancion.cover,
+                })
+
+        return JsonResponse({
+            "canciones": canciones_anyadibles
+        })
+    except:
+        return HttpResponse(b"La playlist no existe o no es tuya.", status=404)
 
 def playlistAnyadirCancion(request, playlistID, cancionID):
+    if not request.user.is_authenticated:
+        return HttpResponse("Inicia sesion primero.", status=401);
+
+    usuario = request.user
+
     try:
-        playlist = Playlist.objects.get(id=playlistID)
+        playlist = Playlist.objects.get(id=playlistID, autor=usuario)
     except:
-        return HttpResponse(b"La playlist no existe", status=404)
+        return HttpResponse(b"La playlist no existe o no es tuya.", status=404)
 
     try:
         cancion = Cancion.objects.get(id=cancionID)
@@ -183,10 +224,15 @@ def playlistAnyadirCancion(request, playlistID, cancionID):
     return HttpResponse(b"Ok", status=200)
 
 def playlistEliminarCancion(request, playlistID, cancionID):
+    if not request.user.is_authenticated:
+        return HttpResponse("Inicia sesion primero.", status=401);
+
+    usuario = request.user
+
     try:
-        playlist = Playlist.objects.get(id=playlistID)
+        playlist = Playlist.objects.get(id=playlistID, autor=usuario)
     except:
-        return HttpResponse(b"La playlist no existe", status=404)
+        return HttpResponse(b"La playlist no existe o no es tuya.", status=404)
 
     try:
         cancion = Cancion.objects.get(id=cancionID)

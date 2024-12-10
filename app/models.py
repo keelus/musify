@@ -1,15 +1,6 @@
+from django.contrib.auth.models import User
 from django.db import models
 from django.db.models import ManyToManyField
-
-class Usuario(models.Model):
-    objects = models.Manager() # Para que el LSP no me de error
-
-    nombre = models.CharField(max_length = 20)
-    email = models.CharField(max_length = 100)
-    contrasenya_hash = models.CharField(max_length = 32) # Md5 char length
-
-    def __str__(self):
-        return f'{self.nombre} ({self.email})'
 
 # Grupos o personas
 class Artista(models.Model):
@@ -39,7 +30,7 @@ class Playlist(models.Model):
     objects = models.Manager()
 
     nombre = models.CharField(max_length = 100)
-    autor = models.ForeignKey(Usuario, on_delete=models.CASCADE)
+    autor = models.ForeignKey(User, on_delete=models.CASCADE)
     canciones = models.ManyToManyField(Cancion, blank=True)
     cover = models.URLField()
 
