@@ -1,9 +1,9 @@
 <section id="contenido" class="contenido-canciones">
 	<h1>Indice de canciones</h1>
 	<div id="div_busc">
-		<label for="buscador">Buscar una cancion: </label>
-		<input type="text" name="buscador" id="label_buscador" placeholder="Nombre, artista...">
-		<input id="btn_enviar" type="submit" value="BUSCAR">
+		<label for="buscador">Buscar: </label>
+		<input type="text" name="buscador" id="input-buscador" placeholder="Nombre, artista...">
+		<button id="boton-buscar-cancion" type="submit">Buscar</button>
 	</div>
 	<br>
 	{% for cancion in canciones %}
@@ -20,4 +20,3 @@
 	</div>
 	{% endfor %}
 </section>
-<script src="../static/js/Buscador.js"></script>

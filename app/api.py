@@ -2,7 +2,9 @@ import json
 from django.contrib.auth import authenticate, login
 from django.contrib.auth.models import User
 from django.core.handlers.asgi import FileResponse
+from django.db.models.query import django
 from django.http import HttpResponseRedirect, JsonResponse, HttpResponse
+from django.shortcuts import get_object_or_404
 from django.views.decorators.csrf import  csrf_exempt
 from django.core.cache import cache
 from app.models import Cancion, Playlist, Usuario
@@ -109,7 +111,7 @@ def playlistActualizarInformacion(request, playlistID):
 def getPlaylistInformacion(request, playlistID):
     playlist = Playlist.objects.get(id=playlistID)
     canciones = []
-    for cancion in playlist.canciones.all():
+    for cancion in reversed(playlist.canciones.all()):
         canciones.append({
             "id": cancion.id,
         })
@@ -134,6 +136,15 @@ def playlistCrear(request):
         return HttpResponse(id, status=200)
     return HttpResponse('Metodo no permitido', status=405)
 
+def playlistEliminar(request, playlistID):
+    try:
+        playlist = Playlist.objects.get(id=playlistID)
+    except:
+        return HttpResponse(b"La playlist no existe", status=404)
+
+    playlist.delete()
+    return HttpResponse(b"Ok", status=200)
+
 def playlistCancionesAnyadibles(request, playlistID):
     playlist = Playlist.objects.get(id=playlistID)
     canciones_en_playlist = []
@@ -153,3 +164,36 @@ def playlistCancionesAnyadibles(request, playlistID):
     return JsonResponse({
         "canciones": canciones_anyadibles
     })
+
+def playlistAnyadirCancion(request, playlistID, cancionID):
+    try:
+        playlist = Playlist.objects.get(id=playlistID)
+    except:
+        return HttpResponse(b"La playlist no existe", status=404)
+
+    try:
+        cancion = Cancion.objects.get(id=cancionID)
+    except:
+        return HttpResponse(b"La cancion no existe", status=404)
+
+    if cancion not in playlist.canciones.all():
+        playlist.canciones.add(cancion)
+        playlist.save()
+
+    return HttpResponse(b"Ok", status=200)
+
+def playlistEliminarCancion(request, playlistID, cancionID):
+    try:
+        playlist = Playlist.objects.get(id=playlistID)
+    except:
+        return HttpResponse(b"La playlist no existe", status=404)
+
+    try:
+        cancion = Cancion.objects.get(id=cancionID)
+    except:
+        return HttpResponse(b"La cancion no existe", status=404)
+
+    playlist.canciones.remove(cancion)
+    playlist.save()
+
+    return HttpResponse(b"Ok", status=200)

@@ -2,10 +2,9 @@
 <section id="contenido">
 	<h1>Tus playlists</h1>
 	<div id="div_busc">
-		<label for="buscador">Busca una playlist: </label>
-		<input type="text" name="buscador" id="label_buscador" placeholder="Nombre...">
-
-		<input id="btn_enviar" type="submit" value="BUSCAR">
+		<label for="buscador">Buscar: </label>
+		<input type="text" name="buscador" id="input-buscador" placeholder="Nombre...">
+		<button id="boton-buscar-playlist" type="submit">Buscar</button>
 	</div>
 	<br>
 	<button id="boton-crear-playlist">Crear una playlist</button>
@@ -21,4 +20,3 @@
 		{% endfor %}
 	</div>
 </section>
-<script src="../static/js/buscadorPlaylist.js"></script>

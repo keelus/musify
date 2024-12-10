@@ -29,37 +29,6 @@
 	font-size: 35px;
 }
 
-.playlist>header button {
-	border: none;
-	border-radius: 5px;
-	background-color: #1ed760;
-	padding: 7.5px 12.5px;
-	font-weight: bold;
-	color: #000;
-	width: fit-content;
-	transition: all .1s linear;
-	display: inline-block;
-}
-
-.playlist>header button.boton-rojo {
-	background-color: #d71e1e;
-	color: #fff;
-}
-
-.playlist>header button.boton-blanco {
-	background-color: #d1d1d1;
-}
-
-.playlist>header button:hover {
-	cursor: pointer;
-	opacity: .8;
-}
-
-.playlist>header button.cancelar {
-	background-color: #4a4a4a;
-	color: #fff;
-}
-
 .playlist>header.edicion {
 	justify-content: flex-start;
 	align-items: flex-start;

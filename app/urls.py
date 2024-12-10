@@ -20,6 +20,9 @@ urlpatterns = [
     path('api/playlist/<str:playlistID>/informacion', view=api.getPlaylistInformacion , name="playlist_informacion"),
     path('api/playlist/<str:playlistID>/actualizarInformacion', view=api.playlistActualizarInformacion, name="playlist_actualizar_informacion"),
     path('api/playlist/<str:playlistID>/cancionesAnyadibles', view=api.playlistCancionesAnyadibles, name="playlist_canciones_anyadibles"),
+    path('api/playlist/<str:playlistID>/anyadirCancion/<str:cancionID>', view=api.playlistAnyadirCancion, name="playlist_anyadir_cancion"),
+    path('api/playlist/<str:playlistID>/eliminarCancion/<str:cancionID>', view=api.playlistEliminarCancion, name="playlist_eliminar_cancion"),
+    path('api/playlist/<str:playlistID>/eliminar', view=api.playlistEliminar, name="playlist_crear"),
     path('api/playlist/crear', view=api.playlistCrear, name="playlist_crear"),
 
 

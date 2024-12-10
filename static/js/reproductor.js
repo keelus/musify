@@ -101,7 +101,18 @@ class Reproductor {
 			$(".parte-volumen .volumen-porcentaje").text(`${Math.floor(this.audioDom.volume * 100)}%`);
 
 			if (this.audioDom.ended) {
-				await this.siguienteCancion()
+				const cancionReproducida = await this.siguienteCancion()
+
+				// Sucede cuando acaba una cancion que no
+				// esta en la playlist.
+				if (!cancionReproducida) {
+					$(".parte-controles .progreso .barra-progreso").css("--progreso", `0%`)
+
+					this.audioDom.pause();
+					this.audioDom.currentTime = 0;
+
+					this.pausado = true;
+				}
 			}
 
 			$(".parte-controles button#playPausa").toggleClass("pausado", this.pausado)
@@ -219,13 +230,14 @@ class Reproductor {
 
 	async siguienteCancion() {
 		if (this.playlistActual === null)
-			return;
+			return false;
 
 		this.indiceCancionActual++;
 		if (this.indiceCancionActual >= this.playlistActual.canciones.length)
 			this.indiceCancionActual = 0;
 
 		await this.reproducirCancionUnica(this.playlistActual.canciones[this.indiceCancionActual]["id"])
+		return true;
 	}
 
 

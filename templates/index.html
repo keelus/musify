@@ -13,9 +13,10 @@
 <body class="no-seleccion">
 	<div class="navegador">
 		<button data-seccion-destino="canciones"
-			class="boton-seccion {% if seccionActiva == 'canciones.html' %}activo{% endif %}">Canciones</button>
+			class="no-estilar boton-seccion {% if seccionActiva == 'canciones.html' %}activo{% endif %}">Canciones</button>
 		<button data-seccion-destino="playlists"
-			class="boton-seccion {% if seccionActiva == 'playlists.html' %}activo{% endif %}">Tus playlists</button>
+			class="no-estilar boton-seccion {% if seccionActiva == 'playlists.html' %}activo{% endif %}">Tus
+			playlists</button>
 		<div class="cuenta">
 			{% if request.user.is_authenticated %}
 			<span><b>{{ request.user.username }}</b></span>
@@ -44,5 +45,6 @@
 <script src="/static/js/index.js"></script>
 <script src="/static/js/playlists.js">	</script>
 <script src="/static/js/playlist.js">	</script>
+<script src="/static/js/buscadores.js"></script>
 
 </html>

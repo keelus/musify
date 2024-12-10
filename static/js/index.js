@@ -85,7 +85,11 @@ $(document).ready(() => {
 
 	const reproductor = new Reproductor();
 
-	$(document).on("click", ".cancion", (e) => {
+	$(document).on("click", ".cancion:not(.no-clickable)", (e) => {
+		const elemento = $(e.target)
+		if (elemento.hasClass("playlist-eliminar-cancion"))
+			return;
+
 		const elementoCancion = $(e.target).closest(".cancion")
 		const cancionId = $(elementoCancion).data("cancion-id")
 		const playlistId = $(elementoCancion).data("playlist-id")

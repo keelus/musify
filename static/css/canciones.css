@@ -10,7 +10,7 @@
 	transition: all .15s ease-out;
 }
 
-.cancion:hover {
+.cancion:not(.no-clickable):hover {
 	background: #27272a;
 	cursor: pointer;
 }

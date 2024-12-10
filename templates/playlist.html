@@ -1,12 +1,12 @@
-<section id="contenido" class="playlist">
+<section id="contenido" class="playlist" data-playlist-id="{{ playlist.id }}">
 	<header class="principal mostrar">
 		<img class="imagen" id="playlist-cover" src="{{ playlist.cover }}" />
 		<div class="informacion">
 			<h1 id="playlist-nombre">{{ playlist.nombre }}</h1>
 			<span>Playlist creada por ti</span>
 			<div>
-				<button id="playlist-editar">Editar información</button>
-				<button class="boton-blanco" id="playlist-anyadir">Añadir canción</button>
+				<button class="boton-verde" id="playlist-editar">Editar información</button>
+				<button id="playlist-anyadir">Añadir canción</button>
 				<button class="boton-rojo" id="playlist-eliminar">Eliminar playlist</button>
 			</div>
 		</div>
@@ -22,15 +22,16 @@
 			<input placeholder="URL de la imagen..." id="input-playlist-cover" />
 		</div>
 		<div>
-			<button class="cancelar" id="playlist-cancelar">Cancelar</button>
-			<button id="playlist-guardar" data-playlist-id="{{ playlist.id }}">Guardar informacion</button>
+			<button class="boton-cancelar" id="playlist-cancelar">Cancelar</button>
+			<button class="boton-verde" id="playlist-guardar">Guardar
+				informacion</button>
 		</div>
 	</header>
 	<hr>
 	{% for cancion in canciones %}
 	<div class="cancion" data-cancion-id="{{ cancion.id }}" data-playlist-id="{{ playlist.id }}">
 		<div class="cover" style="--cover:url('/api/cancion/{{ cancion.id }}/cover')"></div>
-		<div class="informacion">
+		<div class="informacion" style="flex:1;">
 			<span class="titulo">{{ cancion.nombre }}</span>
 			<span class="artista">
 				{% for artista in cancion.artistas %}
@@ -38,6 +39,8 @@
 				{% endfor %}
 			</span>
 		</div>
+		<button class="playlist-eliminar-cancion" data-cancion-id="{{ cancion.id }}"
+			data-playlist-id="{{ playlist.id }}">Eliminar</button>
 	</div>
 	{% empty %}
 	No tienes canciones.

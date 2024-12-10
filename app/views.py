@@ -1,7 +1,7 @@
 from django.contrib.auth.models import User
 from django.core.handlers.asgi import FileResponse
 from django.db.models.fields import return_None
-from django.http import HttpResponse, JsonResponse, HttpResponseRedirect
+from django.http import Http404, HttpResponse, JsonResponse, HttpResponseRedirect
 from django.shortcuts import render, get_object_or_404
 from django.template.loader import render_to_string
 
@@ -57,10 +57,14 @@ def paginaPlaylists(request):
 
 # Pagina de playlist
 def paginaPlaylist(request, playlistID):
-    playlist = get_object_or_404(Playlist, pk=playlistID)
+    try:
+        playlist = get_object_or_404(Playlist, pk=playlistID)
+    except:
+        return HttpResponse(b"La playlist no existe.", status=404)
+
     canciones = []
 
-    for cancionObjetoBd in playlist.canciones.all():
+    for cancionObjetoBd in reversed(playlist.canciones.all()):
         cancion = {
             "id": cancionObjetoBd.id,
             "nombre": cancionObjetoBd.nombre,
