@@ -100,5 +100,16 @@ $(document).ready(() => {
 			reproductor.reproducirCancion(cancionId, playlistId)
 	})
 
+	$("#boton-cancion-aleatoria").on("click", () => {
+		const canciones = $(".cancion");
+
+		const indexRandom = Math.floor(Math.random() * canciones.length);
+		const cancionRandom = $(canciones[indexRandom]);
+
+		const cancionId = cancionRandom.data("cancion-id");
+		reproductor.reproducirCancion(cancionId);
+	});
+
+
 	$(document).on("cambioDePagina", () => reproductor.gestionarCambioPagina())
 })

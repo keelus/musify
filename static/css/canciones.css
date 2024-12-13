@@ -42,3 +42,13 @@
 .cancion>.informacion>.artista {
 	font-size: 12px;
 }
+
+#boton-cancion-aleatoria {
+	height: 33.4px;
+}
+
+#boton-cancion-aleatoria svg {
+    width: 1.5em;
+    height: 1.5em;
+	vertical-align: middle;
+}
