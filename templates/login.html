@@ -4,7 +4,7 @@
 <head>
 	<meta charset="UTF-8">
 	<title>Login</title>
-	<link rel="stylesheet" href="/static/css/login.css">
+	<link rel="stylesheet" href="/static/css/login-registro.css">
 </head>
 
 <body>
@@ -19,17 +19,15 @@
 				<input name="usuario" type="text" {% if usuario %}value="{{ usuario }}" {% endif %}
 					style="margin-top:10px;" placeholder="Correo electrónico o nombre de usuario" required>
 			</label>
-		</div>
-		<div class="inputs">
 			<label>
-				<input name="contra" type="password" placeholder="Contraseña" required>
+				<input name="contra" type="password" style="margin-top:10px" placeholder="Contraseña" required>
 			</label>
 		</div>
 
 		<button type="submit" class="login-btn">Iniciar sesión</button>
 
 		<div class="registrar">
-			<p>¿No tienes una cuenta? <a href="/register">Regístrate</a></p>
+			<p>¿No tienes una cuenta? <a href="/registro">Regístrate</a></p>
 		</div>
 	</form>
 </body>

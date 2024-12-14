@@ -1,7 +1,4 @@
-from django.contrib.auth.models import User
-from django.core.handlers.asgi import FileResponse
-from django.db.models.fields import return_None
-from django.http import Http404, HttpResponse, JsonResponse, HttpResponseRedirect
+from django.http import HttpResponse
 from django.shortcuts import render, get_object_or_404
 from django.template.loader import render_to_string
 
@@ -95,7 +92,13 @@ def paginaPlaylist(request, playlistID):
     }, "reducido" not in request.headers)
 
 def registrarse(request):
-    return render(request, "registro.html")
+    usuario = request.GET.get("usuario") # Si el registro falla, aqui se guarda el input
+    error = request.GET.get("error") # Si el registro falla, aqui se guarda el input
+
+    return render(request, "registro.html", {
+        "usuario": usuario,
+        "error": error,
+    })
 
 def login(request):
     usuario = request.GET.get("usuario") # Si el login falla, aqui se guarda el input

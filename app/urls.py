@@ -10,7 +10,7 @@ urlpatterns = [
 
     # Vistas de autenticacion
     path('login', view=views.login, name="login"),
-    path('register', view=views.registrarse, name="registrarse"),
+    path('registro', view=views.registrarse, name="registrarse"),
 
     # Api
     path('api/cancion/<str:audioID>/informacion', view=api.getAudioInformacion, name="audio_informacion"),
@@ -28,6 +28,6 @@ urlpatterns = [
 
     path('api/sesion/cerrar', view=api.cerrarSesion, name="audio"),
     path('api/sesion/iniciar', view=api.iniciarSesion, name="inicio"),
-    path('procesarDatos', view=api.procesarDatosFormulario, name="procesarDatosFormulario"),
+    path('api/registrarse', view=api.registrarse, name="procesarDatosFormulario"),
 ]
 

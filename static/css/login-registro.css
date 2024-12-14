@@ -31,6 +31,8 @@ h1 {
 
 .inputs {
 	margin-bottom: 20px;
+	display: flex;
+	flex-direction: column;
 }
 
 .inputs input {
@@ -41,6 +43,7 @@ h1 {
 	font-size: 1rem;
 }
 
+.registro-btn,
 .login-btn {
 	width: 100%;
 	padding: 10px;
@@ -53,6 +56,7 @@ h1 {
 	margin-bottom: 20px;
 }
 
+.registro-btn,
 .login-btn:hover {
 	background-color: #1aa34a;
 }

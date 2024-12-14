@@ -22,7 +22,7 @@ $(document).on("click", "#playlist-eliminar", async (e) => {
 
 	await $.ajax({
 		url: `/api/playlist/${playlistId}/eliminar`,
-		method: "GET",
+		method: "POST",
 		success: function(datos) {
 			reemplazarContenido("/playlists")
 		},
@@ -84,7 +84,7 @@ $(document).on("click", ".playlist-anyadir-cancion", async (e) => {
 	// Mostrar modal de listado de canciones
 	await $.ajax({
 		url: `/api/playlist/${playlistId}/anyadirCancion/${cancionId}`,
-		method: "GET",
+		method: "POST",
 		contentType: "application/json",
 		success: function(datos) {
 			$("#playlist-anyadir-modal").remove()
@@ -103,7 +103,7 @@ $(document).on("click", ".playlist-eliminar-cancion", async (e) => {
 	// Mostrar modal de listado de canciones
 	await $.ajax({
 		url: `/api/playlist/${playlistId}/eliminarCancion/${cancionId}`,
-		method: "GET",
+		method: "POST",
 		contentType: "application/json",
 		success: function(datos) {
 			reemplazarContenido(`/playlist/${playlistId}`)
