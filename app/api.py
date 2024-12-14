@@ -39,6 +39,7 @@ def getAudioArchivo(request, audioID):
         contenido = respuesta.content
         cache.set(llave_cache, contenido)
         return HttpResponse(contenido, content_type="audio/ogg")
+    return HttpResponse("No se puede obtener el archivo de audio ahora mismo.", status=500)
 
 @require_http_methods(["GET"])
 def getAudioCover(request, audioID):

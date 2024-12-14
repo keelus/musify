@@ -53,6 +53,9 @@ def paginaPlaylists(request):
             "cover": playlistObjetoBd.cover,
         }
         playlists.append(playlist)
+
+    playlists.reverse()
+
     return pagina(request, "playlists.html", {
         "playlists": playlists
     }, "reducido" not in request.headers)

@@ -17,8 +17,8 @@ class Cancion(models.Model):
     nombre = models.CharField(max_length = 100)
     artistas = models.ManyToManyField(Artista)
 
-    archivo = models.URLField()
-    cover = models.URLField()
+    archivo = models.CharField(max_length = 200)
+    cover = models.CharField(max_length = 200)
 
     def __str__(self):
         artistasVisual = []
@@ -32,7 +32,7 @@ class Playlist(models.Model):
     nombre = models.CharField(max_length = 100)
     autor = models.ForeignKey(User, on_delete=models.CASCADE)
     canciones = models.ManyToManyField(Cancion, blank=True)
-    cover = models.URLField()
+    cover = models.CharField(max_length = 200)
 
     def __str__(self):
         return str(self.nombre)

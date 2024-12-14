@@ -78,25 +78,6 @@ section {
 	border-radius: 5px;
 }
 
-.navegador>.cuenta>a:link {
-	border: none;
-	width: 35px;
-	height: 35px;
-	border-radius: 3px;
-	padding: 5px;
-	box-sizing: border-box;
-	background: #fff;
-
-	transition: all .1s linear;
-}
-
-.navegador>.cuenta>a:link:hover {
-	background: red;
-	cursor: pointer;
-	opacity: .8;
-}
-
-
 button:not(.no-estilar) {
 	border: none;
 	border-radius: 5px;
